@@ -100,6 +100,11 @@ h1 {
     animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
 }
 
+.comments-section {
+    margin-bottom: 2rem;
+    min-height: 200px;
+}
+
 #generator-btn {
     background-color: var(--btn-bg);
     color: white;
