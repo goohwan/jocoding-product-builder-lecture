@@ -1,25 +1,36 @@
 const generatorBtn = document.getElementById("generator-btn");
 const numberDisplay = document.querySelector(".number-display");
+const themeToggleBtn = document.getElementById("theme-toggle");
+const body = document.body;
 
-function generateLottoNumbers() {
-    numberDisplay.innerHTML = ""; 
+// Theme Management
+function initTheme() {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+        body.classList.add("dark-mode");
+        themeToggleBtn.textContent = "☀️";
+    } else {
+        themeToggleBtn.textContent = "🌙";
+    }
+}
+
+function toggleTheme() {
+    body.classList.toggle("dark-mode");
+    const isDark = body.classList.contains("dark-mode");
+    themeToggleBtn.textContent = isDark ? "☀️" : "🌙";
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+}
+
+themeToggleBtn.addEventListener("click", toggleTheme);
+
+// Lotto Generation
+function generateSingleSet() {
     const numbers = new Set();
     while (numbers.size < 6) {
         const randomNumber = Math.floor(Math.random() * 45) + 1;
         numbers.add(randomNumber);
     }
-
-    const sortedNumbers = Array.from(numbers).sort((a, b) => a - b);
-
-    sortedNumbers.forEach((number, index) => {
-        setTimeout(() => {
-            const ball = document.createElement("div");
-            ball.classList.add("number-ball");
-            ball.textContent = number;
-            ball.style.backgroundColor = getBallColor(number);
-            numberDisplay.appendChild(ball);
-        }, index * 300); 
-    });
+    return Array.from(numbers).sort((a, b) => a - b);
 }
 
 function getBallColor(number) {
@@ -30,7 +41,37 @@ function getBallColor(number) {
     return "#b0d840"; // Green
 }
 
+function generateLottoNumbers() {
+    numberDisplay.innerHTML = "";
+    
+    // Generate 5 sets
+    for (let i = 0; i < 5; i++) {
+        const row = document.createElement("div");
+        row.classList.add("lotto-row");
+        
+        // Stagger the appearance of each row slightly
+        row.style.animationDelay = `${i * 0.1}s`;
+
+        const numbers = generateSingleSet();
+        
+        numbers.forEach((number, index) => {
+            const ball = document.createElement("div");
+            ball.classList.add("number-ball");
+            ball.textContent = number;
+            ball.style.backgroundColor = getBallColor(number);
+            
+            // Stagger ball animation within the row
+            ball.style.animationDelay = `${(i * 0.1) + (index * 0.05)}s`;
+            
+            row.appendChild(ball);
+        });
+
+        numberDisplay.appendChild(row);
+    }
+}
+
 generatorBtn.addEventListener("click", generateLottoNumbers);
 
-
+// Initialize
+initTheme();
 window.onload = generateLottoNumbers;
