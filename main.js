@@ -12,6 +12,7 @@ function loadUtterances(theme) {
     script.src = 'https://utteranc.es/client.js';
     script.setAttribute('repo', 'goohwan/jocoding-product-builder-lecture');
     script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'lotto');
     script.setAttribute('theme', theme);
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
