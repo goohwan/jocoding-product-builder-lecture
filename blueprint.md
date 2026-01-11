@@ -9,6 +9,7 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
 ### 1. **Pages**
     *   **`index.html`**: The main landing page (Service Hub).
     *   **`lotto.html`**: The Lotto Number Generator service.
+    *   **`food.html`**: The "What to eat today?" service.
     *   **`privacy.html`**: The Privacy Policy page.
 
 ### 2. **Core Components**
@@ -29,6 +30,7 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
     *   **Interactivity**: 
         *   Clicking on a generated lotto number row copies the numbers to the clipboard.
         *   Visual feedback is provided upon copying.
+        *   "What to eat today?" features a random meal recommender with dynamic image fetching (simulated search) and a "Thinking..." loading state.
 
 ## Development Log
 
@@ -51,3 +53,6 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
 *   **[Done]** **Add Service Images**: Replaced emoji placeholders with custom SVG icons (`lotto-icon.svg`, `rocket-icon.svg`) for a more professional look.
 *   **[Done]** **Center Lotto Machine**: Fixed the alignment of the lotto machine container to be perfectly centered on the page using `margin: 0 auto`.
 *   **[Done]** **Copy to Clipboard**: Added functionality to copy lotto numbers to the clipboard when a user clicks on a number row, with visual "Copied!" feedback.
+
+### Phase 4: New Services (Completed)
+*   **[Done]** **Add "What to eat today?"**: Create a new service that randomly recommends a meal (Korean, Chinese, Japanese, Western) and fetches a relevant image. Includes a "Thinking..." loading state.

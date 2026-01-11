@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="food-title">오늘 뭐 먹지? - APBP</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3474389046240414"
+     crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <app-nav></app-nav>
+    <main class="container">
+        <div class="lotto-machine" style="max-width: 600px;">
+            <h1 data-i18n="food-title">오늘 뭐 먹지?</h1>
+            <p data-i18n="food-desc" style="margin-bottom: 2rem;">버튼을 누르면 랜덤으로 메뉴를 추천해드립니다!</p>
+            
+            <div id="food-display" class="food-display">
+                <div id="food-image-container" class="food-image-container">
+                    <div class="placeholder-text" data-i18n="food-placeholder">?</div>
+                    <img id="food-image" src="" alt="Food" style="display: none;">
+                </div>
+                <h2 id="food-name" class="food-name"></h2>
+                <p id="food-category" class="food-category"></p>
+            </div>
+
+            <button id="recommend-btn" data-i18n="food-btn">메뉴 추천받기</button>
+        </div>
+        
+        <div class="comments-section">
+            <!-- Future comments section -->
+        </div>
+    </main>
+    <script type="module" src="nav.js"></script>
+    <script type="module" src="food.js"></script>
+</body>
+</html>
