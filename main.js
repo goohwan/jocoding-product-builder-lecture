@@ -38,8 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const listEl = document.getElementById('winning-numbers-list');
         if (!listEl) return;
 
-        // Calculate latest round
-        // Round 1 was 2002-12-07
+        // Calculate latest round (Round 1: 2002-12-07)
         const startDate = new Date('2002-12-07T20:00:00+09:00');
         const now = new Date();
         const diffTime = now - startDate;
@@ -48,27 +47,52 @@ document.addEventListener('DOMContentLoaded', () => {
         
         listEl.innerHTML = '<li style="text-align:center; padding: 1rem;">Loading...</li>';
 
-        const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-        
-        // Helper to fetch one round
-        const fetchRound = async (round) => {
-            const targetUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${round}`;
-            const response = await fetch(proxyUrl + targetUrl);
-            if (response.status === 403) {
-                throw new Error("CORS_AUTH_REQUIRED");
+        // Proxy strategies
+        const proxies = [
+            { url: "https://cors-anywhere.herokuapp.com/", name: "cors-anywhere" },
+            { url: "https://api.allorigins.win/raw?url=", name: "allorigins" },
+            { url: "https://corsproxy.io/?", name: "corsproxy" }
+        ];
+
+        const fetchWithFallback = async (targetUrl) => {
+            let lastError = null;
+            for (const proxy of proxies) {
+                try {
+                    const fullUrl = proxy.url + (proxy.name === 'cors-anywhere' ? targetUrl : encodeURIComponent(targetUrl));
+                    const response = await fetch(fullUrl);
+                    
+                    if (response.status === 403 && proxy.name === 'cors-anywhere') {
+                        throw new Error("CORS_AUTH_REQUIRED");
+                    }
+                    if (!response.ok) continue;
+
+                    // Check if response is JSON
+                    const text = await response.text();
+                    if (text.trim().startsWith('<')) { // HTML returned instead of JSON
+                        continue;
+                    }
+                    
+                    return JSON.parse(text);
+                } catch (e) {
+                    lastError = e;
+                    if (e.message === "CORS_AUTH_REQUIRED") throw e;
+                }
             }
-            return response.json();
+            throw lastError || new Error("All proxies failed");
         };
 
-        // Try to fetch current round to check validity/auth
+        // Try to fetch current round to check validity
         try {
-            let data = await fetchRound(currentRound);
-            if (data.returnValue === 'fail') {
+            const targetUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${currentRound}`;
+            let data = await fetchWithFallback(targetUrl);
+            
+            if (!data || data.returnValue === 'fail') {
                 currentRound--;
-                data = await fetchRound(currentRound);
+                const prevUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${currentRound}`;
+                data = await fetchWithFallback(prevUrl);
             }
             
-            if (data.returnValue === 'fail') {
+            if (!data || data.returnValue === 'fail') {
                 listEl.innerHTML = '<li style="text-align:center; padding: 1rem;">Data unavailable.</li>';
                 return;
             }
@@ -76,10 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.message === "CORS_AUTH_REQUIRED") {
                 listEl.innerHTML = `
                     <li style="text-align:center; padding: 1rem; font-size: 0.9rem;">
-                        <span>Data access required.</span><br>
-                        <a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank" style="color: var(--btn-bg); font-weight: bold;">Enable Access</a>
+                        <strong style="color: var(--btn-bg);">Action Required</strong><br>
+                        <span>To see winning numbers, please enable the demo server temporarily.</span><br>
+                        <a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank" style="display:inline-block; margin-top:5px; padding:5px 10px; background:var(--btn-bg); color:white; text-decoration:none; border-radius:4px;">Enable Access</a>
                         <br>
-                        <button id="retry-fetch-btn" style="margin-top: 0.5rem; padding: 0.2rem 0.5rem; cursor: pointer;">Retry</button>
+                        <button id="retry-fetch-btn" style="margin-top: 10px; padding: 5px 10px; cursor: pointer;">Then Click Retry</button>
                     </li>
                 `;
                 document.getElementById('retry-fetch-btn').addEventListener('click', fetchWinningNumbers);
@@ -98,9 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (round < 1) break;
 
             try {
-                const data = await fetchRound(round);
+                const targetUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${round}`;
+                const data = await fetchWithFallback(targetUrl);
 
-                if (data.returnValue === 'success') {
+                if (data && data.returnValue === 'success') {
                     const li = document.createElement('li');
                     li.className = 'winning-item';
                     
@@ -109,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         data.drwtNo4, data.drwtNo5, data.drwtNo6
                     ];
                     
-                    // Create ball HTML
                     const ballsHtml = numbers.map(n => 
                         `<div class="mini-ball" style="background-color: ${getBallColor(n)}">${n}</div>`
                     ).join('');
@@ -128,8 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error(`Failed to fetch round ${round}`, e);
             }
             
-            // Delay to avoid rate limiting
-            await new Promise(r => setTimeout(r, 150));
+            await new Promise(r => setTimeout(r, 100));
         }
     }
 
