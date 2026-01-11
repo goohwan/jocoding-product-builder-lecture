@@ -39,26 +39,56 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!listEl) return;
 
         // Calculate latest round
-        const startDate = new Date('2002-12-07T20:40:00+09:00'); // KST
+        // Round 1 was 2002-12-07
+        const startDate = new Date('2002-12-07T20:00:00+09:00');
         const now = new Date();
-        const diffTime = Math.abs(now - startDate);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-        let currentRound = Math.floor((diffDays - 1) / 7) + 1;
+        const diffTime = now - startDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
+        let currentRound = Math.floor(diffDays / 7) + 1;
         
-        // Adjust for Saturday before draw time (simple approx)
-        if (now.getDay() === 6 && now.getHours() < 21) {
-             currentRound--;
+        // Results usually come out around 20:45 KST on Saturday.
+        // If it's Saturday before 21:00, show previous round.
+        // We will be safe and just try to fetch. If fail, we go back.
+        
+        listEl.innerHTML = '<li style="text-align:center; padding: 1rem;">Loading...</li>';
+
+        // Try to find the latest valid round (up to 2 attempts back)
+        let validRoundFound = false;
+        for (let attempt = 0; attempt < 2; attempt++) {
+            try {
+                // Use allorigins as a more reliable proxy for JSON
+                const proxyUrl = "https://api.allorigins.win/raw?url=";
+                const targetUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${currentRound}`;
+                
+                const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
+                const data = await response.json();
+
+                if (data.returnValue === 'success') {
+                    validRoundFound = true;
+                    break;
+                } else {
+                    currentRound--; // Try previous round
+                }
+            } catch (e) {
+                console.warn(`Round ${currentRound} check failed`, e);
+                currentRound--;
+            }
+        }
+
+        if (!validRoundFound) {
+            listEl.innerHTML = '<li style="text-align:center; padding: 1rem;">Failed to load data.</li>';
+            return;
         }
 
         listEl.innerHTML = ''; // Clear loading
 
-        // Fetch last 10 rounds
+        // Fetch last 10 rounds starting from the valid currentRound
         for (let i = 0; i < 10; i++) {
             const round = currentRound - i;
             if (round < 1) break;
 
             try {
-                const proxyUrl = "https://corsproxy.io/?";
+                const proxyUrl = "https://api.allorigins.win/raw?url=";
                 const targetUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${round}`;
                 
                 const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
@@ -92,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error(`Failed to fetch round ${round}`, e);
             }
             
-            // Small delay to be nice to the API
-            await new Promise(r => setTimeout(r, 100));
+            // Delay to avoid rate limiting
+            await new Promise(r => setTimeout(r, 200));
         }
     }
 
