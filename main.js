@@ -46,53 +46,59 @@ document.addEventListener('DOMContentLoaded', () => {
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
         let currentRound = Math.floor(diffDays / 7) + 1;
         
-        // Results usually come out around 20:45 KST on Saturday.
-        // If it's Saturday before 21:00, show previous round.
-        // We will be safe and just try to fetch. If fail, we go back.
-        
         listEl.innerHTML = '<li style="text-align:center; padding: 1rem;">Loading...</li>';
 
-        // Try to find the latest valid round (up to 2 attempts back)
-        let validRoundFound = false;
-        for (let attempt = 0; attempt < 2; attempt++) {
-            try {
-                // Use allorigins as a more reliable proxy for JSON
-                const proxyUrl = "https://api.allorigins.win/raw?url=";
-                const targetUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${currentRound}`;
-                
-                const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
-                const data = await response.json();
-
-                if (data.returnValue === 'success') {
-                    validRoundFound = true;
-                    break;
-                } else {
-                    currentRound--; // Try previous round
-                }
-            } catch (e) {
-                console.warn(`Round ${currentRound} check failed`, e);
-                currentRound--;
+        const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+        
+        // Helper to fetch one round
+        const fetchRound = async (round) => {
+            const targetUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${round}`;
+            const response = await fetch(proxyUrl + targetUrl);
+            if (response.status === 403) {
+                throw new Error("CORS_AUTH_REQUIRED");
             }
-        }
+            return response.json();
+        };
 
-        if (!validRoundFound) {
+        // Try to fetch current round to check validity/auth
+        try {
+            let data = await fetchRound(currentRound);
+            if (data.returnValue === 'fail') {
+                currentRound--;
+                data = await fetchRound(currentRound);
+            }
+            
+            if (data.returnValue === 'fail') {
+                listEl.innerHTML = '<li style="text-align:center; padding: 1rem;">Data unavailable.</li>';
+                return;
+            }
+        } catch (e) {
+            if (e.message === "CORS_AUTH_REQUIRED") {
+                listEl.innerHTML = `
+                    <li style="text-align:center; padding: 1rem; font-size: 0.9rem;">
+                        <span>Data access required.</span><br>
+                        <a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank" style="color: var(--btn-bg); font-weight: bold;">Enable Access</a>
+                        <br>
+                        <button id="retry-fetch-btn" style="margin-top: 0.5rem; padding: 0.2rem 0.5rem; cursor: pointer;">Retry</button>
+                    </li>
+                `;
+                document.getElementById('retry-fetch-btn').addEventListener('click', fetchWinningNumbers);
+                return;
+            }
+            console.error("Initial fetch check failed", e);
             listEl.innerHTML = '<li style="text-align:center; padding: 1rem;">Failed to load data.</li>';
             return;
         }
 
         listEl.innerHTML = ''; // Clear loading
 
-        // Fetch last 10 rounds starting from the valid currentRound
+        // Fetch last 10 rounds
         for (let i = 0; i < 10; i++) {
             const round = currentRound - i;
             if (round < 1) break;
 
             try {
-                const proxyUrl = "https://api.allorigins.win/raw?url=";
-                const targetUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${round}`;
-                
-                const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
-                const data = await response.json();
+                const data = await fetchRound(round);
 
                 if (data.returnValue === 'success') {
                     const li = document.createElement('li');
@@ -123,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Delay to avoid rate limiting
-            await new Promise(r => setTimeout(r, 200));
+            await new Promise(r => setTimeout(r, 150));
         }
     }
 
