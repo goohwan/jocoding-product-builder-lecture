@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="rocketGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <path d="M50,10 C50,10 20,40 20,65 C20,80 30,90 30,90 L50,80 L70,90 C70,90 80,80 80,65 C80,40 50,10 50,10 Z" fill="url(#rocketGradient)" stroke="#fff" stroke-width="2"/>
+  <circle cx="50" cy="55" r="10" fill="#fff" opacity="0.5"/>
+  <path d="M30,90 L20,100 M70,90 L80,100 M50,80 L50,95" stroke="#4facfe" stroke-width="3" stroke-linecap="round"/>
+</svg>

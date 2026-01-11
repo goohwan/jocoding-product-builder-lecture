@@ -70,6 +70,7 @@ body {
     max-width: 500px;
     position: relative;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 auto;
 }
 
 h1 {

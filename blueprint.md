@@ -19,12 +19,16 @@ This project is a multi-service web application. It starts with a landing page t
         *   **Sticky Position**: Fixed at the top for better UX.
     *   **Internationalization (i18n)**: A module to handle language switching across the site using `data-i18n` attributes.
     *   **Styling**: A central `style.css` for consistent look and feel, using modern CSS features like variables for theming.
+    *   **Assets**: SVG icons for services located in `assets/`.
 
 ### 3. **Design & UX**
     *   **Theme**: Dark and light modes for user preference. Default is **Dark Mode**.
     *   **Language**: Support for English and Korean. Default is **Korean**.
     *   **Layout**: A clean, modern, and responsive layout that works on both mobile and web.
     *   **Visuals**: Use of iconography and clear typography to enhance user experience.
+    *   **Interactivity**: 
+        *   Clicking on a generated lotto number row copies the numbers to the clipboard.
+        *   Visual feedback is provided upon copying.
 
 ## Development Log
 
@@ -42,3 +46,8 @@ This project is a multi-service web application. It starts with a landing page t
 *   **[Done]** **Fix Lotto Generator**: Refactored `lotto.js` to use a reliable local random number generator instead of a potentially unstable external API dependency. Added proper error handling and animation delays.
 *   **[Done]** **Fix Toggles**: Resolved issues where Dark/Light mode and Language toggles were unresponsive by ensuring scripts and modules load correctly without blocking errors.
 *   **[Done]** **Set Defaults**: Verified configuration to default to **Korean** language and **Dark Mode** for new users.
+
+### Phase 3: Visual & UX Enhancements (Completed)
+*   **[Done]** **Add Service Images**: Replaced emoji placeholders with custom SVG icons (`lotto-icon.svg`, `rocket-icon.svg`) for a more professional look.
+*   **[Done]** **Center Lotto Machine**: Fixed the alignment of the lotto machine container to be perfectly centered on the page using `margin: 0 auto`.
+*   **[Done]** **Copy to Clipboard**: Added functionality to copy lotto numbers to the clipboard when a user clicks on a number row, with visual "Copied!" feedback.

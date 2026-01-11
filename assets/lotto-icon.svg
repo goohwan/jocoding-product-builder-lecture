@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="ballGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff7e5f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#feb47b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="45" fill="url(#ballGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="50" y="60" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="white" text-anchor="middle">7</text>
+  <path d="M75,25 L85,15 M25,75 L15,85 M75,75 L85,85 M25,25 L15,15" stroke="#feb47b" stroke-width="3" stroke-linecap="round"/>
+</svg>

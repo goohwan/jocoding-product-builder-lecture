@@ -107,6 +107,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 row.appendChild(ball);
             });
 
+            // Add click-to-copy functionality
+            row.style.cursor = 'pointer';
+            row.title = 'Click to copy';
+            row.addEventListener('click', () => {
+                const nums = numbers.join(', ');
+                navigator.clipboard.writeText(nums).then(() => {
+                    // Visual feedback
+                    const originalBg = row.style.backgroundColor;
+                    row.style.transition = 'background-color 0.3s';
+                    row.style.backgroundColor = 'var(--btn-bg)';
+                    
+                    // Create and append a temporary "Copied!" message if not already present
+                    let msg = row.querySelector('.copy-msg');
+                    if (!msg) {
+                        msg = document.createElement('span');
+                        msg.className = 'copy-msg';
+                        msg.textContent = 'Copied!';
+                        msg.style.color = '#fff';
+                        msg.style.marginLeft = '10px';
+                        msg.style.fontWeight = 'bold';
+                        row.appendChild(msg);
+                    }
+
+                    setTimeout(() => {
+                        row.style.backgroundColor = originalBg;
+                        if (msg) msg.remove();
+                    }, 1000);
+                });
+            });
+
             numberDisplay.appendChild(row);
         });
     }
