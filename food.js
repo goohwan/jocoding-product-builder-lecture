@@ -47,6 +47,11 @@ const foods = {
 
 const categories = ['korean', 'chinese', 'japanese', 'western'];
 
+// Google Custom Search API Configuration
+// Get these from: https://developers.google.com/custom-search/v1/overview
+const GOOGLE_API_KEY = ""; // PASTE YOUR API KEY HERE
+const GOOGLE_SEARCH_ENGINE_ID = ""; // PASTE YOUR SEARCH ENGINE ID (CX) HERE
+
 const recommendBtn = document.getElementById('recommend-btn');
 const foodNameEl = document.getElementById('food-name');
 const foodCategoryEl = document.getElementById('food-category');
@@ -91,19 +96,18 @@ async function recommend() {
     // 3. Pick Random Food
     const food = getRandomFood();
     
-    // Simulate thinking/search phase without extra text update
+    // Simulate thinking/search phase
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     // 4. Update Text with Result
     foodNameEl.textContent = food.name;
     foodCategoryEl.textContent = getCategoryName(food.category);
 
-    // 5. Fetch "Nth" Image from Real Search (Wikimedia Commons)
-    // We use a real search API to satisfy the "Google Image Search" style requirement without an API key.
+    // 5. Fetch "Nth" Image from Google Custom Search
     const nth = Math.floor(Math.random() * 10) + 1; // Simulate taking the Nth image (1-10)
     
     try {
-        const imageUrl = await fetchFoodImage(food.en, nth);
+        const imageUrl = await fetchGoogleImage(food.en, nth);
         
         // Preload image before showing
         const img = new Image();
@@ -117,38 +121,44 @@ async function recommend() {
         img.src = imageUrl;
     } catch (error) {
         console.error("Search failed:", error);
-        // Fallback
+        
+        // If API key is missing, show a specific alert or fallback
+        if (error.message.includes("API Key")) {
+             alert("Google API Key is missing! Please configure it in food.js.");
+        }
+
+        // Fallback to placeholder
         foodImageEl.src = `https://via.placeholder.com/400x300?text=${food.en}`;
         recommendBtn.disabled = false;
     }
 }
 
-async function fetchFoodImage(query, nth) {
-    // Search Wikimedia Commons for "File:{query}" to get images
-    const endpoint = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=File:${encodeURIComponent(query)}&gsrnamespace=6&gsrlimit=20&prop=imageinfo&iiprop=url&format=json&origin=*`;
+async function fetchGoogleImage(query, nth) {
+    if (!GOOGLE_API_KEY || !GOOGLE_SEARCH_ENGINE_ID) {
+        throw new Error("Google API Key or Search Engine ID is missing.");
+    }
+
+    // Google Custom Search API
+    // We fetch 10 results and pick the Nth one.
+    // Note: 'start' parameter can be used for pagination if nth > 10.
+    const endpoint = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_SEARCH_ENGINE_ID}&q=${encodeURIComponent(query)}&searchType=image&num=10`;
     
     const response = await fetch(endpoint);
+    
+    if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(`Google API Error: ${errData.error?.message || response.statusText}`);
+    }
+
     const data = await response.json();
     
-    if (!data.query || !data.query.pages) {
+    if (!data.items || data.items.length === 0) {
         throw new Error("No results found");
     }
     
-    const pages = Object.values(data.query.pages);
-    if (pages.length === 0) {
-        throw new Error("No images found");
-    }
-    
     // Pick the Nth image (wrapping around if N > length)
-    // nth is 1-based, array is 0-based
-    const index = (nth - 1) % pages.length;
-    const page = pages[index];
-    
-    if (page.imageinfo && page.imageinfo[0] && page.imageinfo[0].url) {
-        return page.imageinfo[0].url;
-    }
-    
-    throw new Error("Image URL not found");
+    const index = (nth - 1) % data.items.length;
+    return data.items[index].link;
 }
 
 if (recommendBtn) {
