@@ -97,24 +97,20 @@ async function recommend() {
     // 3. Pick Random Food
     const food = getRandomFood();
     
-    // Simulate thinking/search phase
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // 4. Update Text with Result
-    foodNameEl.textContent = food.name;
-    foodCategoryEl.textContent = getCategoryName(food.category);
-
-    // 5. Fetch "Nth" Image from Naver Search API
-    const nth = Math.floor(Math.random() * 10) + 1; // Simulate taking the Nth image (1-10)
+    // 4. Fetch "Nth" Image from Naver Search API
+    const nth = Math.floor(Math.random() * 10) + 1;
     
     try {
-        // Use Korean name for Naver Search
         const imageUrl = await fetchNaverImage(food.name, nth);
         
-        // Preload image before showing
+        // 5. Preload image before showing anything
         const img = new Image();
         img.onload = () => {
+            // Update Text and Image at the same time
+            foodNameEl.textContent = food.name;
+            foodCategoryEl.textContent = getCategoryName(food.category);
             foodImageEl.src = imageUrl;
+            
             recommendBtn.disabled = false;
         };
         img.onerror = () => {
@@ -124,11 +120,9 @@ async function recommend() {
     } catch (error) {
         console.error("Search failed:", error);
         
-        if (error.message.includes("CORS")) {
-             alert("CORS Error: Naver API cannot be called directly from the browser. You may need a proxy or disable web security for testing.");
-        }
-
-        // Fallback to placeholder
+        // Fallback: Show text and placeholder if search fails
+        foodNameEl.textContent = food.name;
+        foodCategoryEl.textContent = getCategoryName(food.category);
         foodImageEl.src = `https://via.placeholder.com/400x300?text=${encodeURIComponent(food.name)}`;
         recommendBtn.disabled = false;
     }
