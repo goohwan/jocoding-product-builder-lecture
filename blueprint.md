@@ -56,3 +56,8 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
 
 ### Phase 4: New Services (Completed)
 *   **[Done]** **Add "What to eat today?"**: Create a new service that randomly recommends a meal (Korean, Chinese, Japanese, Western) and fetches a relevant image. Includes a "Thinking..." loading state.
+
+### Phase 5: Refinements & Fixes (Current)
+*   **[Done]** **Navigation Update**: Added "What to eat today?" link to the main navigation bar.
+*   **[Done]** **Fix Toggles**: Refactored `nav.js` to handle theme and language toggles internally, ensuring they work consistently across all pages without external dependencies.
+*   **[Done]** **Enhance Food Search**: Updated the recommendation logic to simulate a "Google Search" process with status updates ("Thinking...", "Searching...") and fetches the "Nth" image result using keywords.

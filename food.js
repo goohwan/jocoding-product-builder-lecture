@@ -75,7 +75,7 @@ function getCategoryName(category) {
 }
 
 async function recommend() {
-    // 1. Show Loading State
+    // 1. Show Loading State (Thinking)
     recommendBtn.disabled = true;
     foodNameEl.textContent = "고민중..."; // "Thinking..."
     foodCategoryEl.textContent = "";
@@ -85,26 +85,39 @@ async function recommend() {
     foodImageEl.style.display = 'block';
     foodImageEl.src = THINKING_IMAGE_URL; // Show thinking girl
 
-    // 2. Wait for a moment to simulate "thinking" time (e.g., 1.5 seconds)
+    // 2. Wait for a moment to simulate "thinking" time
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     // 3. Pick Random Food
     const food = getRandomFood();
+    
+    // Simulate Search Phase
+    foodNameEl.textContent = `구글 검색 중: "${food.name}"...`;
+    
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
-    // 4. Update Text
+    // 4. Update Text with Result
     foodNameEl.textContent = food.name;
     foodCategoryEl.textContent = getCategoryName(food.category);
 
-    // 5. Fetch Real Food Image
-    // Using Pollinations AI with English name for better results
-    // Adding a random seed to get different images for the same food if clicked again
-    const seed = Math.floor(Math.random() * 1000);
-    const imageUrl = `https://image.pollinations.ai/prompt/delicious_${food.en}_food_photography_realistic_4k?width=400&height=300&nologo=true&seed=${seed}`;
+    // 5. Fetch "Nth" Image (Simulated by lock param)
+    const nth = Math.floor(Math.random() * 100) + 1; // Simulate taking the Nth image
+    // Using loremflickr for keyword-based "search" simulation
+    const imageUrl = `https://loremflickr.com/400/300/${food.en.replace(/\s+/g, ',')},food?lock=${nth}`;
+
+    console.log(`Fetching image for ${food.en} (Nth: ${nth})`);
 
     // Preload image before showing
     const img = new Image();
     img.onload = () => {
         foodImageEl.src = imageUrl;
+        recommendBtn.disabled = false;
+        // Optional: Show which result was found
+        // foodCategoryEl.textContent += ` (검색 결과 #${nth})`;
+    };
+    img.onerror = () => {
+        // Fallback if loremflickr fails
+        foodImageEl.src = `https://via.placeholder.com/400x300?text=${food.en}`;
         recommendBtn.disabled = false;
     };
     img.src = imageUrl;

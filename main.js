@@ -12,53 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const body = document.body;
 
-    function initTheme() {
-        const savedTheme = localStorage.getItem("theme");
-        if (savedTheme === "dark") {
-            body.classList.add("dark-mode");
-            document.querySelector('app-nav').classList.add('dark-mode');
-        } else {
-            body.classList.remove("dark-mode");
-            document.querySelector('app-nav').classList.remove('dark-mode');
-        }
-        updateThemeIcon(savedTheme === "dark");
-        loadUtterances(savedTheme === 'dark' ? 'github-dark' : 'github-light');
-    }
-
-    function toggleTheme() {
-        const isDark = body.classList.toggle("dark-mode");
-        document.querySelector('app-nav').classList.toggle('dark-mode');
-        localStorage.setItem("theme", isDark ? "dark" : "light");
-        updateThemeIcon(isDark);
-        loadUtterances(isDark ? 'github-dark' : 'github-light');
-    }
-
-    function updateThemeIcon(isDark) {
-        const themeToggleBtn = document.querySelector('app-nav')?.shadowRoot.querySelector('#theme-toggle');
-        if (themeToggleBtn) {
-            themeToggleBtn.textContent = isDark ? "☀️" : "🌙";
-        }
-    }
-
     function setupEventListeners() {
-        customElements.whenDefined('app-nav').then(() => {
-            const shadowRoot = document.querySelector('app-nav').shadowRoot;
-            const themeToggleBtn = shadowRoot.querySelector('#theme-toggle');
-            const langSelector = shadowRoot.querySelector('#lang-selector');
-
-            themeToggleBtn.addEventListener("click", toggleTheme);
-            langSelector.addEventListener('change', (e) => {
-                setLanguage(e.target.value);
-                // Re-initialize texts in shadow DOM as well
-                initializeI18n();
-            });
-            
-            langSelector.value = localStorage.getItem('language') || 'ko';
-
-            // Initial render
-            initializeI18n();
-            initTheme();
+        // Listen for theme changes from the nav component
+        window.addEventListener('theme-changed', (e) => {
+            const theme = e.detail.theme;
+            loadUtterances(theme === 'dark' ? 'github-dark' : 'github-light');
         });
+
+        // Initialize Utterances based on current stored theme
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        loadUtterances(currentTheme === 'dark' ? 'github-dark' : 'github-light');
 
         if (document.getElementById('generator-btn')) {
             document.getElementById('generator-btn').addEventListener('click', generateLottoNumbers);

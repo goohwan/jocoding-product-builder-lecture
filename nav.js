@@ -1,7 +1,21 @@
+import { setLanguage, initializeI18n } from './i18n.js';
+
 class AppNav extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
+    }
+
+    connectedCallback() {
+        this.render();
+        this.setupEventListeners();
+        this.initTheme();
+        
+        // Initialize i18n for the nav itself
+        initializeI18n();
+    }
+
+    render() {
         this.shadowRoot.innerHTML = `
             <style>
                 :host {
@@ -72,6 +86,7 @@ class AppNav extends HTMLElement {
                 <a href="index.html" class="nav-logo" data-i18n="nav-home">APBP</a>
                 <div class="nav-links">
                     <a href="lotto.html" data-i18n="nav-lotto">Lotto</a>
+                    <a href="food.html" data-i18n="nav-food">Food</a>
                     <a href="privacy.html" data-i18n="nav-privacy">Privacy</a>
                     <button id="theme-toggle">🌙</button>
                     <select id="lang-selector">
@@ -81,6 +96,54 @@ class AppNav extends HTMLElement {
                 </div>
             </nav>
         `;
+    }
+
+    setupEventListeners() {
+        const themeToggleBtn = this.shadowRoot.querySelector('#theme-toggle');
+        const langSelector = this.shadowRoot.querySelector('#lang-selector');
+
+        themeToggleBtn.addEventListener("click", () => this.toggleTheme());
+        
+        langSelector.addEventListener('change', (e) => {
+            setLanguage(e.target.value);
+            initializeI18n(); // Update all texts on the page
+        });
+
+        // Set initial value for lang selector
+        langSelector.value = localStorage.getItem('language') || 'ko';
+    }
+
+    initTheme() {
+        const savedTheme = localStorage.getItem("theme") || 'dark'; // Default to dark
+        const isDark = savedTheme === "dark";
+        
+        // Apply to body
+        if (isDark) {
+            document.body.classList.add("dark-mode");
+            this.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove("dark-mode");
+            this.classList.remove('dark-mode');
+        }
+        
+        this.updateThemeIcon(isDark);
+    }
+
+    toggleTheme() {
+        const isDark = document.body.classList.toggle("dark-mode");
+        this.classList.toggle('dark-mode');
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+        this.updateThemeIcon(isDark);
+        
+        // Dispatch event if other components need to know
+        window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme: isDark ? 'dark' : 'light' } }));
+    }
+
+    updateThemeIcon(isDark) {
+        const themeToggleBtn = this.shadowRoot.querySelector('#theme-toggle');
+        if (themeToggleBtn) {
+            themeToggleBtn.textContent = isDark ? "☀️" : "🌙";
+        }
     }
 }
 
