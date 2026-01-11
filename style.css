@@ -19,15 +19,45 @@
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.landing {
+    text-align: center;
+}
+
+.hero {
+    margin-bottom: 40px;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.service-card {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    text-decoration: none;
+    color: var(--text-color);
+    transition: transform 0.2s;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
 }
 
 .lotto-machine {
@@ -46,6 +76,50 @@ h1 {
     color: var(--text-color);
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.nav-logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+#theme-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+#lang-selector {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.25rem;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 /* Toggle Switch */

@@ -1,19 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Number Generator</title>
+    <title>Service Hub</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="lotto-machine">
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
-        <h1>Lotto Number Generator</h1>
-        <div class="number-display"></div>
-        <button id="generator-btn">Generate Numbers</button>
-        <div class="comments-section"></div>
-    </div>
-    <script src="main.js"></script>
+    <app-nav></app-nav>
+    <main class="container landing">
+        <div class="hero">
+            <h1 data-i18n="hero-title">Welcome to Service Hub</h1>
+            <p data-i18n="hero-desc">Explore our useful tools and services.</p>
+        </div>
+        <div class="service-grid">
+            <a href="lotto.html" class="service-card">
+                <div class="icon">🎱</div>
+                <h2 data-i18n="lotto-service-name">Lotto Generator</h2>
+                <p data-i18n="lotto-service-desc">Get your lucky numbers for the week.</p>
+            </a>
+            <!-- Placeholder for future services -->
+             <a href="#" class="service-card coming-soon">
+                <div class="icon">🚀</div>
+                <h2 data-i18n="future-service-name">Coming Soon</h2>
+                <p data-i18n="future-service-desc">More services are on the way.</p>
+            </a>
+        </div>
+    </main>
+    <script type="module" src="nav.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>
