@@ -114,7 +114,11 @@ async function recommend() {
             recommendBtn.disabled = false;
         };
         img.onerror = () => {
-            throw new Error("Image load failed");
+            console.error("Image load failed, using fallback.");
+            foodNameEl.textContent = food.name;
+            foodCategoryEl.textContent = getCategoryName(food.category);
+            foodImageEl.src = `https://via.placeholder.com/400x300?text=${encodeURIComponent(food.name)}`;
+            recommendBtn.disabled = false;
         };
         img.src = imageUrl;
     } catch (error) {
@@ -153,9 +157,12 @@ async function fetchNaverImage(query, nth) {
         }
         
         // Pick the first item since we requested display=1 with an offset of 'nth'
-        // Some images might block hotlinking. In a real app, you might want to proxy the image itself.
-        // Force HTTPS to avoid mixed content warnings
-        return data.items[0].link.replace(/^http:\/\//, 'https://');
+        // Use weserv.nl as an image proxy to handle HTTPS/SSL issues and mixed content
+        // weserv takes the url without protocol
+        const originalUrl = data.items[0].link;
+        const cleanUrl = originalUrl.replace(/^https?:\/\//, '');
+        return `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}&w=400&h=300&fit=cover`;
+
     } catch (error) {
         console.error("Fetch error:", error);
         throw error;
