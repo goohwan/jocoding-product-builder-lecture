@@ -154,7 +154,8 @@ async function fetchNaverImage(query, nth) {
         
         // Pick the first item since we requested display=1 with an offset of 'nth'
         // Some images might block hotlinking. In a real app, you might want to proxy the image itself.
-        return data.items[0].link;
+        // Force HTTPS to avoid mixed content warnings
+        return data.items[0].link.replace(/^http:\/\//, 'https://');
     } catch (error) {
         console.error("Fetch error:", error);
         throw error;

@@ -67,7 +67,7 @@ body {
     box-shadow: 0 10px 25px var(--shadow-color);
     text-align: center;
     width: 90%;
-    max-width: 500px;
+    max-width: 600px;
     position: relative;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     margin: 0 auto;
@@ -271,7 +271,7 @@ h1 {
 .content-wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 1.5rem;
     justify-content: center;
     align-items: flex-start;
 }
