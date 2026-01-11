@@ -135,35 +135,36 @@ async function recommend() {
 }
 
 async function fetchNaverImage(query, nth) {
-    // Using 'cors-anywhere' proxy to bypass browser CORS restrictions for this demo.
-    // Note: You might need to visit https://cors-anywhere.herokuapp.com/corsdemo to enable temporary access.
-    const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-    const targetUrl = `https://openapi.naver.com/v1/search/image?query=${encodeURIComponent(query)}&display=1&start=${nth}&sort=sim`;
+    // Using 'corsproxy.io' which is more stable and doesn't require manual activation like cors-anywhere.
+    const proxyUrl = "https://corsproxy.io/?";
+    const targetUrl = `https://openapi.naver.com/v1/search/image?query=${encodeURIComponent(query)}&display=10&start=${nth}&sort=sim`;
     
-    const response = await fetch(proxyUrl + targetUrl, {
-        method: 'GET',
-        headers: {
-            'X-Naver-Client-Id': NAVER_CLIENT_ID,
-            'X-Naver-Client-Secret': NAVER_CLIENT_SECRET
+    try {
+        const response = await fetch(proxyUrl + encodeURIComponent(targetUrl), {
+            method: 'GET',
+            headers: {
+                'X-Naver-Client-Id': NAVER_CLIENT_ID,
+                'X-Naver-Client-Secret': NAVER_CLIENT_SECRET
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Naver API Error: ${response.statusText}`);
         }
-    });
-    
-    if (response.status === 403) {
-        alert("CORS Proxy Error: Please visit https://cors-anywhere.herokuapp.com/corsdemo to request temporary access to the demo server, then try again.");
-        throw new Error("CORS Proxy requires activation");
-    }
 
-    if (!response.ok) {
-        throw new Error(`Naver API Error: ${response.statusText}`);
+        const data = await response.json();
+        
+        if (!data.items || data.items.length === 0) {
+            throw new Error("No results found");
+        }
+        
+        // Pick the first item since we requested display=1 with an offset of 'nth'
+        // Some images might block hotlinking. In a real app, you might want to proxy the image itself.
+        return data.items[0].link;
+    } catch (error) {
+        console.error("Fetch error:", error);
+        throw error;
     }
-
-    const data = await response.json();
-    
-    if (!data.items || data.items.length === 0) {
-        throw new Error("No results found");
-    }
-    
-    return data.items[0].link;
 }
 
 if (recommendBtn) {
