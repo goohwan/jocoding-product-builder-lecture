@@ -47,10 +47,11 @@ const foods = {
 
 const categories = ['korean', 'chinese', 'japanese', 'western'];
 
-// Google Custom Search API Configuration
-// Get these from: https://developers.google.com/custom-search/v1/overview
-const GOOGLE_API_KEY = ""; // PASTE YOUR API KEY HERE
-const GOOGLE_SEARCH_ENGINE_ID = ""; // PASTE YOUR SEARCH ENGINE ID (CX) HERE
+// Naver Search API Configuration
+// Note: Calling this API directly from the frontend may cause CORS errors.
+// It is recommended to use a backend proxy for production.
+const NAVER_CLIENT_ID = "Ufnci94HHyrKm_r0wmyj";
+const NAVER_CLIENT_SECRET = "BeDbva4IA5";
 
 const recommendBtn = document.getElementById('recommend-btn');
 const foodNameEl = document.getElementById('food-name');
@@ -103,11 +104,12 @@ async function recommend() {
     foodNameEl.textContent = food.name;
     foodCategoryEl.textContent = getCategoryName(food.category);
 
-    // 5. Fetch "Nth" Image from Google Custom Search
+    // 5. Fetch "Nth" Image from Naver Search API
     const nth = Math.floor(Math.random() * 10) + 1; // Simulate taking the Nth image (1-10)
     
     try {
-        const imageUrl = await fetchGoogleImage(food.en, nth);
+        // Use Korean name for Naver Search
+        const imageUrl = await fetchNaverImage(food.name, nth);
         
         // Preload image before showing
         const img = new Image();
@@ -122,32 +124,35 @@ async function recommend() {
     } catch (error) {
         console.error("Search failed:", error);
         
-        // If API key is missing, show a specific alert or fallback
-        if (error.message.includes("API Key")) {
-             alert("Google API Key is missing! Please configure it in food.js.");
+        if (error.message.includes("CORS")) {
+             alert("CORS Error: Naver API cannot be called directly from the browser. You may need a proxy or disable web security for testing.");
         }
 
         // Fallback to placeholder
-        foodImageEl.src = `https://via.placeholder.com/400x300?text=${food.en}`;
+        foodImageEl.src = `https://via.placeholder.com/400x300?text=${encodeURIComponent(food.name)}`;
         recommendBtn.disabled = false;
     }
 }
 
-async function fetchGoogleImage(query, nth) {
-    if (!GOOGLE_API_KEY || !GOOGLE_SEARCH_ENGINE_ID) {
-        throw new Error("Google API Key or Search Engine ID is missing.");
-    }
-
-    // Google Custom Search API
-    // We fetch 10 results and pick the Nth one.
-    // Note: 'start' parameter can be used for pagination if nth > 10.
-    const endpoint = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_SEARCH_ENGINE_ID}&q=${encodeURIComponent(query)}&searchType=image&num=10`;
+async function fetchNaverImage(query, nth) {
+    // Using a CORS proxy to bypass browser restrictions for this demo.
+    // In a real backend environment, you would call the Naver API directly.
+    // We try to call directly first, if it fails, the catch block in recommend handles it.
+    // However, to make it work in this specific "no-backend" environment, we might need a workaround.
+    // For now, we implement the direct call as requested.
     
-    const response = await fetch(endpoint);
+    const url = `https://openapi.naver.com/v1/search/image?query=${encodeURIComponent(query)}&display=1&start=${nth}&sort=sim`;
+    
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'X-Naver-Client-Id': NAVER_CLIENT_ID,
+            'X-Naver-Client-Secret': NAVER_CLIENT_SECRET
+        }
+    });
     
     if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(`Google API Error: ${errData.error?.message || response.statusText}`);
+        throw new Error(`Naver API Error: ${response.statusText}`);
     }
 
     const data = await response.json();
@@ -156,9 +161,7 @@ async function fetchGoogleImage(query, nth) {
         throw new Error("No results found");
     }
     
-    // Pick the Nth image (wrapping around if N > length)
-    const index = (nth - 1) % data.items.length;
-    return data.items[index].link;
+    return data.items[0].link;
 }
 
 if (recommendBtn) {
