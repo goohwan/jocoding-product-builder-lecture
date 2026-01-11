@@ -266,3 +266,112 @@ h1 {
     margin-bottom: 1rem;
     filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
+
+/* Side Panel Layout */
+.content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.side-panel {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.info-box {
+    background-color: rgba(128, 128, 128, 0.1); /* Grayish box */
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    text-align: left;
+}
+
+.info-box h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    border-bottom: 2px solid var(--btn-bg);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    color: var(--text-color);
+}
+
+.update-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.update-list li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+
+.update-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--btn-bg);
+    font-weight: bold;
+}
+
+/* Winning Numbers Styles */
+.winning-numbers-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.winning-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(128,128,128,0.2);
+}
+
+.winning-round {
+    font-weight: bold;
+    color: var(--btn-bg);
+    font-size: 0.9rem;
+    margin-right: 10px;
+}
+
+.winning-balls {
+    display: flex;
+    gap: 4px;
+}
+
+.mini-ball {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Scrollbar for winning list */
+.winning-numbers-list::-webkit-scrollbar {
+    width: 6px;
+}
+.winning-numbers-list::-webkit-scrollbar-thumb {
+    background-color: rgba(128,128,128,0.4);
+    border-radius: 3px;
+}

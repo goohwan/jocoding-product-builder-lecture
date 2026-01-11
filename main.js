@@ -27,6 +27,74 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('generator-btn').addEventListener('click', generateLottoNumbers);
             generateLottoNumbers();
         }
+
+        // Fetch winning numbers if the element exists
+        if (document.getElementById('winning-numbers-list')) {
+            fetchWinningNumbers();
+        }
+    }
+
+    async function fetchWinningNumbers() {
+        const listEl = document.getElementById('winning-numbers-list');
+        if (!listEl) return;
+
+        // Calculate latest round
+        const startDate = new Date('2002-12-07T20:40:00+09:00'); // KST
+        const now = new Date();
+        const diffTime = Math.abs(now - startDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        let currentRound = Math.floor((diffDays - 1) / 7) + 1;
+        
+        // Adjust for Saturday before draw time (simple approx)
+        if (now.getDay() === 6 && now.getHours() < 21) {
+             currentRound--;
+        }
+
+        listEl.innerHTML = ''; // Clear loading
+
+        // Fetch last 10 rounds
+        for (let i = 0; i < 10; i++) {
+            const round = currentRound - i;
+            if (round < 1) break;
+
+            try {
+                const proxyUrl = "https://corsproxy.io/?";
+                const targetUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${round}`;
+                
+                const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
+                const data = await response.json();
+
+                if (data.returnValue === 'success') {
+                    const li = document.createElement('li');
+                    li.className = 'winning-item';
+                    
+                    const numbers = [
+                        data.drwtNo1, data.drwtNo2, data.drwtNo3, 
+                        data.drwtNo4, data.drwtNo5, data.drwtNo6
+                    ];
+                    
+                    // Create ball HTML
+                    const ballsHtml = numbers.map(n => 
+                        `<div class="mini-ball" style="background-color: ${getBallColor(n)}">${n}</div>`
+                    ).join('');
+
+                    li.innerHTML = `
+                        <span class="winning-round">${round}회</span>
+                        <div class="winning-balls">
+                            ${ballsHtml}
+                            <span style="margin: 0 2px; color: var(--text-color);">+</span>
+                            <div class="mini-ball" style="background-color: ${getBallColor(data.bnusNo)}">${data.bnusNo}</div>
+                        </div>
+                    `;
+                    listEl.appendChild(li);
+                }
+            } catch (e) {
+                console.error(`Failed to fetch round ${round}`, e);
+            }
+            
+            // Small delay to be nice to the API
+            await new Promise(r => setTimeout(r, 100));
+        }
     }
 
     function loadUtterances(theme) {

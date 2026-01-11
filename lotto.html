@@ -11,11 +11,37 @@
 <body>
     <app-nav></app-nav>
     <main class="container">
-        <div class="lotto-machine">
-            <h1 data-i18n="lotto-title">Lotto Number Generator</h1>
-            <div class="number-display"></div>
-            <button id="generator-btn" data-i18n="generate-btn">Generate Numbers</button>
-            <div class="comments-section"></div>
+        <div class="content-wrapper">
+            <!-- Left Side: Lotto Generator -->
+            <div class="lotto-machine">
+                <h1 data-i18n="lotto-title">Lotto Number Generator</h1>
+                <div class="number-display"></div>
+                <button id="generator-btn" data-i18n="generate-btn">Generate Numbers</button>
+                <div class="comments-section"></div>
+            </div>
+
+            <!-- Right Side: Info Panel -->
+            <div class="side-panel">
+                <!-- Service Updates -->
+                <div class="info-box">
+                    <h3 data-i18n="update-title">Service Updates</h3>
+                    <ul class="update-list">
+                        <li data-i18n="update-1">Lotto Number Generation</li>
+                        <li data-i18n="update-2">Generate 5 Sets</li>
+                        <li data-i18n="update-3">Added Utterances Comments</li>
+                        <li data-i18n="update-4">Dark/Light Mode, i18n</li>
+                        <li data-i18n="update-5">Copy Numbers Function</li>
+                    </ul>
+                </div>
+
+                <!-- Winning Numbers -->
+                <div class="info-box">
+                    <h3 data-i18n="winning-title">Recent Winning Numbers</h3>
+                    <ul id="winning-numbers-list" class="winning-numbers-list">
+                        <li style="text-align:center; padding: 1rem;">Loading...</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </main>
     <script type="module" src="nav.js"></script>

@@ -20,7 +20,14 @@ const translations = {
         "food-placeholder": "?",
         "privacy-title": "Privacy Policy",
         "privacy-content-1": "This is a placeholder for the privacy policy.",
-        "privacy-content-2": "Your data is safe with us. We are not collecting any personal information."
+        "privacy-content-2": "Your data is safe with us. We are not collecting any personal information.",
+        "update-title": "Service Updates",
+        "update-1": "Lotto Number Generation",
+        "update-2": "Generate 5 Sets",
+        "update-3": "Added Utterances Comments",
+        "update-4": "Dark/Light Mode, i18n",
+        "update-5": "Copy Numbers Function",
+        "winning-title": "Recent Winning Numbers"
     },
     ko: {
         "nav-home": "APBP",
@@ -43,7 +50,14 @@ const translations = {
         "food-placeholder": "?",
         "privacy-title": "개인정보처리방침",
         "privacy-content-1": "이것은 개인정보처리방침을 위한 자리 표시자입니다.",
-        "privacy-content-2": "당신의 정보는 안전하게 보호됩니다. 우리는 어떠한 개인 정보도 수집하지 않습니다."
+        "privacy-content-2": "당신의 정보는 안전하게 보호됩니다. 우리는 어떠한 개인 정보도 수집하지 않습니다.",
+        "update-title": "서비스 업데이트 내역",
+        "update-1": "로또번호 생성",
+        "update-2": "로또번호 생성 5세트",
+        "update-3": "Utterance 댓글기능 추가",
+        "update-4": "다크모드, 라이트모드, 한영변환",
+        "update-5": "로또번호 복사기능",
+        "winning-title": "최근 10회 당첨번호"
     }
 };
 
