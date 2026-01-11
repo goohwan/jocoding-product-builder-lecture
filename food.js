@@ -91,9 +91,7 @@ async function recommend() {
     // 3. Pick Random Food
     const food = getRandomFood();
     
-    // Simulate Search Phase
-    foodNameEl.textContent = `구글 검색 중: "${food.name}"...`;
-    
+    // Simulate thinking/search phase without extra text update
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     // 4. Update Text with Result
