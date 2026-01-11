@@ -1,8 +1,8 @@
 const translations = {
     en: {
         "nav-home": "APBP",
-        "nav-lotto": "Lotto",
-        "nav-food": "Food",
+        "nav-lotto": "Lotto Generator",
+        "nav-food": "What to Eat?",
         "nav-privacy": "Privacy",
         "hero-title": "APBP (AI Product Builder's PlayGround)",
         "hero-desc": "Explore our useful tools and services.",
@@ -24,8 +24,8 @@ const translations = {
     },
     ko: {
         "nav-home": "APBP",
-        "nav-lotto": "로또 생성기",
-        "nav-food": "메뉴 추천",
+        "nav-lotto": "로또 번호 생성기",
+        "nav-food": "오늘 뭐 먹지?",
         "nav-privacy": "개인정보처리방침",
         "hero-title": "조코딩과 함께하는 APBP(AI Product Builder's PlayGround)",
         "hero-desc": "다양하고 유용한 서비스들을 만나보세요.",

@@ -180,7 +180,7 @@ h1 {
     min-height: 200px;
 }
 
-#generator-btn {
+#generator-btn, #recommend-btn {
     background-color: var(--btn-bg);
     color: white;
     border: none;
@@ -193,12 +193,12 @@ h1 {
     width: 100%;
 }
 
-#generator-btn:hover {
+#generator-btn:hover, #recommend-btn:hover {
     background-color: var(--btn-hover);
     transform: translateY(-2px);
 }
 
-#generator-btn:active {
+#generator-btn:active, #recommend-btn:active {
     transform: translateY(1px);
     background-color: var(--btn-active);
 }

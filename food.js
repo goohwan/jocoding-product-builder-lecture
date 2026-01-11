@@ -135,15 +135,12 @@ async function recommend() {
 }
 
 async function fetchNaverImage(query, nth) {
-    // Using a CORS proxy to bypass browser restrictions for this demo.
-    // In a real backend environment, you would call the Naver API directly.
-    // We try to call directly first, if it fails, the catch block in recommend handles it.
-    // However, to make it work in this specific "no-backend" environment, we might need a workaround.
-    // For now, we implement the direct call as requested.
+    // Using 'cors-anywhere' proxy to bypass browser CORS restrictions for this demo.
+    // Note: You might need to visit https://cors-anywhere.herokuapp.com/corsdemo to enable temporary access.
+    const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+    const targetUrl = `https://openapi.naver.com/v1/search/image?query=${encodeURIComponent(query)}&display=1&start=${nth}&sort=sim`;
     
-    const url = `https://openapi.naver.com/v1/search/image?query=${encodeURIComponent(query)}&display=1&start=${nth}&sort=sim`;
-    
-    const response = await fetch(url, {
+    const response = await fetch(proxyUrl + targetUrl, {
         method: 'GET',
         headers: {
             'X-Naver-Client-Id': NAVER_CLIENT_ID,
@@ -151,6 +148,11 @@ async function fetchNaverImage(query, nth) {
         }
     });
     
+    if (response.status === 403) {
+        alert("CORS Proxy Error: Please visit https://cors-anywhere.herokuapp.com/corsdemo to request temporary access to the demo server, then try again.");
+        throw new Error("CORS Proxy requires activation");
+    }
+
     if (!response.ok) {
         throw new Error(`Naver API Error: ${response.statusText}`);
     }

@@ -60,4 +60,5 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
 ### Phase 5: Refinements & Fixes (Current)
 *   **[Done]** **Navigation Update**: Added "What to eat today?" link to the main navigation bar.
 *   **[Done]** **Fix Toggles**: Refactored `nav.js` to handle theme and language toggles internally, ensuring they work consistently across all pages without external dependencies.
-*   **[Done]** **Naver Image Search Integration**: Implemented Naver Search API (Image) logic to fetch real "Nth" search results using the provided Client ID and Secret. **Note:** Direct frontend calls may encounter CORS issues in some environments.
+*   **[Done]** **Naver Image Search Integration**: Implemented Naver Search API (Image) logic to fetch real "Nth" search results using the provided Client ID and Secret. **Note:** Added `cors-anywhere` proxy to bypass browser CORS restrictions.
+*   **[Done]** **UI/UX Improvements**: Updated navigation service names for clarity ("Lotto Generator", "What to Eat?") and styled the food recommendation button to match the primary button style.
