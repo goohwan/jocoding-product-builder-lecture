@@ -1,9 +1,9 @@
 const translations = {
     en: {
-        "nav-home": "Service Hub",
+        "nav-home": "APBP",
         "nav-lotto": "Lotto",
         "nav-privacy": "Privacy",
-        "hero-title": "Welcome to Service Hub",
+        "hero-title": "APBP (AI Product Builder's PlayGround)",
         "hero-desc": "Explore our useful tools and services.",
         "lotto-service-name": "Lotto Generator",
         "lotto-service-desc": "Get your lucky numbers for the week.",
@@ -16,10 +16,10 @@ const translations = {
         "privacy-content-2": "Your data is safe with us. We are not collecting any personal information."
     },
     ko: {
-        "nav-home": "서비스 허브",
+        "nav-home": "APBP",
         "nav-lotto": "로또 생성기",
         "nav-privacy": "개인정보처리방침",
-        "hero-title": "서비스 허브에 오신 것을 환영합니다",
+        "hero-title": "조코딩과 함께하는 APBP(AI Product Builder's PlayGround)",
         "hero-desc": "다양하고 유용한 서비스들을 만나보세요.",
         "lotto-service-name": "로또 번호 생성기",
         "lotto-service-desc": "이번 주 행운의 번호를 받아보세요.",

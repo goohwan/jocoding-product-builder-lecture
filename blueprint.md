@@ -1,8 +1,8 @@
-# Blueprint: Service Hub Website
+# Blueprint: APBP (AI Product Builder's PlayGround)
 
 ## Overview
 
-This project is a multi-service web application. It starts with a landing page that introduces the available services and provides navigation to each one. The initial services include a Lotto Number Generator, with plans to add more in the future. The application supports multiple languages, a dark/light theme, and includes a privacy policy page.
+This project is a multi-service web application rebranded as **APBP (AI Product Builder's PlayGround)**. It starts with a landing page that introduces the available services and provides navigation to each one. The initial services include a Lotto Number Generator, with plans to add more in the future. The application supports multiple languages, a dark/light theme, and includes a privacy policy page. Google AdSense is integrated for monetization.
 
 ## Project Structure & Features
 

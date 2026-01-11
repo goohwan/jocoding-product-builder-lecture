@@ -69,7 +69,7 @@ class AppNav extends HTMLElement {
                 }
             </style>
             <nav class="main-nav">
-                <a href="index.html" class="nav-logo" data-i18n="nav-home">Service Hub</a>
+                <a href="index.html" class="nav-logo" data-i18n="nav-home">APBP</a>
                 <div class="nav-links">
                     <a href="lotto.html" data-i18n="nav-lotto">Lotto</a>
                     <a href="privacy.html" data-i18n="nav-privacy">Privacy</a>
