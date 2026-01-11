@@ -2,46 +2,46 @@ import { updateTexts } from './i18n.js';
 
 const foods = {
     korean: [
-        { name: "김치찌개", en: "Kimchi Stew" },
-        { name: "된장찌개", en: "Doenjang Stew" },
-        { name: "비빔밥", en: "Bibimbap" },
-        { name: "불고기", en: "Bulgogi" },
-        { name: "삼겹살", en: "Samgyeopsal" },
-        { name: "제육볶음", en: "Jeyuk Bokkeum" },
-        { name: "떡볶이", en: "Tteokbokki" },
-        { name: "순두부찌개", en: "Sundubu Jjigae" },
-        { name: "갈비탕", en: "Galbitang" },
-        { name: "냉면", en: "Naengmyeon" }
+        { name: "김치찌개", en: "Kimchi Stew", recipe: "Boil kimchi, pork, tofu, and onions in water with gochujang." },
+        { name: "된장찌개", en: "Doenjang Stew", recipe: "Boil soybean paste, tofu, zucchini, and mushrooms in anchovy broth." },
+        { name: "비빔밥", en: "Bibimbap", recipe: "Mix rice with sautéed vegetables, beef, fried egg, and gochujang." },
+        { name: "불고기", en: "Bulgogi", recipe: "Marinate thin beef slices in soy sauce, sugar, garlic, and sesame oil, then grill." },
+        { name: "삼겹살", en: "Samgyeopsal", recipe: "Grill pork belly slices and eat with lettuce, garlic, and ssamjang." },
+        { name: "제육볶음", en: "Jeyuk Bokkeum", recipe: "Stir-fry pork with spicy gochujang sauce and vegetables." },
+        { name: "떡볶이", en: "Tteokbokki", recipe: "Simmer rice cakes and fish cakes in spicy gochujang broth." },
+        { name: "순두부찌개", en: "Sundubu Jjigae", recipe: "Boil soft tofu, clams, and egg in spicy broth." },
+        { name: "갈비탕", en: "Galbitang", recipe: "Simmer beef short ribs with radish and green onions for a long time." },
+        { name: "냉면", en: "Naengmyeon", recipe: "Boil buckwheat noodles and serve in chilled beef broth with cucumber and egg." }
     ],
     chinese: [
-        { name: "짜장면", en: "Jajangmyeon" },
-        { name: "짬뽕", en: "Jjamppong" },
-        { name: "탕수육", en: "Tangsuyuk" },
-        { name: "마파두부", en: "Mapo Tofu" },
-        { name: "양꼬치", en: "Lamb Skewers" },
-        { name: "볶음밥", en: "Fried Rice" },
-        { name: "유린기", en: "Yuringi" },
-        { name: "깐풍기", en: "Kkanpunggi" }
+        { name: "짜장면", en: "Jajangmyeon", recipe: "Stir-fry black bean paste with pork and onions, serve over noodles." },
+        { name: "짬뽕", en: "Jjamppong", recipe: "Stir-fry seafood and vegetables, then boil in spicy broth with noodles." },
+        { name: "탕수육", en: "Tangsuyuk", recipe: "Deep-fry pork coated in starch, serve with sweet and sour sauce." },
+        { name: "마파두부", en: "Mapo Tofu", recipe: "Stir-fry tofu and minced meat in spicy chili bean sauce." },
+        { name: "양꼬치", en: "Lamb Skewers", recipe: "Skewer lamb cubes, season with cumin, and grill over charcoal." },
+        { name: "볶음밥", en: "Fried Rice", recipe: "Stir-fry rice with egg, green onions, and vegetables/meat." },
+        { name: "유린기", en: "Yuringi", recipe: "Deep-fry chicken and serve with fresh vegetables and soy-vinegar sauce." },
+        { name: "깐풍기", en: "Kkanpunggi", recipe: "Deep-fry chicken and stir-fry in spicy garlic sauce." }
     ],
     japanese: [
-        { name: "초밥", en: "Sushi" },
-        { name: "라멘", en: "Ramen" },
-        { name: "우동", en: "Udon" },
-        { name: "돈까스", en: "Tonkatsu" },
-        { name: "규동", en: "Gyudon" },
-        { name: "가츠동", en: "Katsudon" },
-        { name: "소바", en: "Soba" },
-        { name: "타코야끼", en: "Takoyaki" }
+        { name: "초밥", en: "Sushi", recipe: "Place fresh sashimi on seasoned rice balls." },
+        { name: "라멘", en: "Ramen", recipe: "Boil noodles in pork/miso broth with chashu, egg, and bamboo shoots." },
+        { name: "우동", en: "Udon", recipe: "Boil thick wheat noodles in soy-dashi broth with fish cakes." },
+        { name: "돈까스", en: "Tonkatsu", recipe: "Bread pork cutlets with panko and deep-fry." },
+        { name: "규동", en: "Gyudon", recipe: "Simmer thin beef and onions in sweet soy sauce, serve over rice." },
+        { name: "가츠동", en: "Katsudon", recipe: "Simmer tonkatsu and egg in dashi sauce, serve over rice." },
+        { name: "소바", en: "Soba", recipe: "Boil buckwheat noodles, serve cold with dipping sauce or in hot broth." },
+        { name: "타코야끼", en: "Takoyaki", recipe: "Cook batter with octopus chunks in a special mold, top with sauce and flakes." }
     ],
     western: [
-        { name: "피자", en: "Pizza" },
-        { name: "파스타", en: "Pasta" },
-        { name: "스테이크", en: "Steak" },
-        { name: "햄버거", en: "Hamburger" },
-        { name: "샐러드", en: "Salad" },
-        { name: "리조또", en: "Risotto" },
-        { name: "샌드위치", en: "Sandwich" },
-        { name: "그라탕", en: "Gratin" }
+        { name: "피자", en: "Pizza", recipe: "Top dough with tomato sauce, cheese, and toppings, then bake." },
+        { name: "파스타", en: "Pasta", recipe: "Boil pasta and toss with tomato, cream, or oil-based sauce." },
+        { name: "스테이크", en: "Steak", recipe: "Season beef steak with salt/pepper and sear in a pan or grill." },
+        { name: "햄버거", en: "Hamburger", recipe: "Grill beef patty, assemble in bun with lettuce, tomato, and sauce." },
+        { name: "샐러드", en: "Salad", recipe: "Toss fresh vegetables/fruits with dressing and optional protein." },
+        { name: "리조또", en: "Risotto", recipe: "Sauté rice with butter/onion, slowly add broth while stirring until creamy." },
+        { name: "샌드위치", en: "Sandwich", recipe: "Place meat, cheese, and vegetables between bread slices." },
+        { name: "그라탕", en: "Gratin", recipe: "Bake macaroni or potatoes with white sauce and cheese until golden." }
     ]
 };
 
@@ -109,7 +109,8 @@ async function recommend() {
             const recipeContent = document.getElementById('recipe-content');
             if (recipeContent) {
                 recipeContent.innerHTML = `
-                    <p style="margin-bottom: 1rem; font-weight: bold; font-size: 1.1rem;">${food.name}</p>
+                    <p style="margin-bottom: 0.5rem; font-weight: bold; font-size: 1.1rem;">${food.name}</p>
+                    <p style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-color); line-height: 1.4;">${food.recipe}</p>
                     <div style="display: flex; flex-direction: column; gap: 0.8rem;">
                         <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(food.name + ' 레시피')}" target="_blank" class="service-card" style="padding: 0.8rem; background-color: #ff0000; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
                             <span data-i18n="recipe-btn-youtube">YouTube Recipe</span>
