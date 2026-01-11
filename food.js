@@ -98,10 +98,12 @@ async function recommend() {
     foodNameEl.textContent = food.name;
     foodCategoryEl.textContent = getCategoryName(food.category);
 
-    // 5. Fetch "Nth" Image (Simulated by lock param)
+    // 5. Fetch "Nth" Image (Simulated by seed)
     const nth = Math.floor(Math.random() * 100) + 1; // Simulate taking the Nth image
-    // Using loremflickr for keyword-based "search" simulation
-    const imageUrl = `https://loremflickr.com/400/300/${food.en.replace(/\s+/g, ',')},food?lock=${nth}`;
+    
+    // Using Pollinations AI to ensure the image matches the food name exactly.
+    // The 'seed' parameter acts as the "Nth result" selector.
+    const imageUrl = `https://image.pollinations.ai/prompt/delicious_${food.en}_food_photography?width=400&height=300&nologo=true&seed=${nth}`;
 
     console.log(`Fetching image for ${food.en} (Nth: ${nth})`);
 
