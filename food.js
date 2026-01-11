@@ -98,29 +98,57 @@ async function recommend() {
     foodNameEl.textContent = food.name;
     foodCategoryEl.textContent = getCategoryName(food.category);
 
-    // 5. Fetch "Nth" Image (Simulated by seed)
-    const nth = Math.floor(Math.random() * 100) + 1; // Simulate taking the Nth image
+    // 5. Fetch "Nth" Image from Real Search (Wikimedia Commons)
+    // We use a real search API to satisfy the "Google Image Search" style requirement without an API key.
+    const nth = Math.floor(Math.random() * 10) + 1; // Simulate taking the Nth image (1-10)
     
-    // Using Pollinations AI to ensure the image matches the food name exactly.
-    // The 'seed' parameter acts as the "Nth result" selector.
-    const imageUrl = `https://image.pollinations.ai/prompt/delicious_${food.en}_food_photography?width=400&height=300&nologo=true&seed=${nth}`;
-
-    console.log(`Fetching image for ${food.en} (Nth: ${nth})`);
-
-    // Preload image before showing
-    const img = new Image();
-    img.onload = () => {
-        foodImageEl.src = imageUrl;
-        recommendBtn.disabled = false;
-        // Optional: Show which result was found
-        // foodCategoryEl.textContent += ` (검색 결과 #${nth})`;
-    };
-    img.onerror = () => {
-        // Fallback if loremflickr fails
+    try {
+        const imageUrl = await fetchFoodImage(food.en, nth);
+        
+        // Preload image before showing
+        const img = new Image();
+        img.onload = () => {
+            foodImageEl.src = imageUrl;
+            recommendBtn.disabled = false;
+        };
+        img.onerror = () => {
+            throw new Error("Image load failed");
+        };
+        img.src = imageUrl;
+    } catch (error) {
+        console.error("Search failed:", error);
+        // Fallback
         foodImageEl.src = `https://via.placeholder.com/400x300?text=${food.en}`;
         recommendBtn.disabled = false;
-    };
-    img.src = imageUrl;
+    }
+}
+
+async function fetchFoodImage(query, nth) {
+    // Search Wikimedia Commons for "File:{query}" to get images
+    const endpoint = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=File:${encodeURIComponent(query)}&gsrnamespace=6&gsrlimit=20&prop=imageinfo&iiprop=url&format=json&origin=*`;
+    
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    
+    if (!data.query || !data.query.pages) {
+        throw new Error("No results found");
+    }
+    
+    const pages = Object.values(data.query.pages);
+    if (pages.length === 0) {
+        throw new Error("No images found");
+    }
+    
+    // Pick the Nth image (wrapping around if N > length)
+    // nth is 1-based, array is 0-based
+    const index = (nth - 1) % pages.length;
+    const page = pages[index];
+    
+    if (page.imageinfo && page.imageinfo[0] && page.imageinfo[0].url) {
+        return page.imageinfo[0].url;
+    }
+    
+    throw new Error("Image URL not found");
 }
 
 if (recommendBtn) {
