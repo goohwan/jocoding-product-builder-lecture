@@ -11,21 +11,45 @@
 <body>
     <app-nav></app-nav>
     <main class="container">
-        <div class="lotto-machine" style="max-width: 600px;">
-            <h1 data-i18n="food-title">오늘 뭐 먹지?</h1>
-            <p data-i18n="food-desc" style="margin-bottom: 2rem;">버튼을 누르면 랜덤으로 메뉴를 추천해드립니다!</p>
-            
-            <div id="food-display" class="food-display">
-                <div id="food-image-container" class="food-image-container">
-                    <div class="placeholder-text" data-i18n="food-placeholder">?</div>
-                    <img id="food-image" src="" alt="Food" style="display: none;">
+        <div class="content-wrapper">
+            <!-- Left Side: Food Recommender -->
+            <div class="lotto-machine" style="max-width: 600px;">
+                <h1 data-i18n="food-title">오늘 뭐 먹지?</h1>
+                <p data-i18n="food-desc" style="margin-bottom: 2rem;">버튼을 누르면 랜덤으로 메뉴를 추천해드립니다!</p>
+                
+                <div id="food-display" class="food-display">
+                    <div id="food-image-container" class="food-image-container">
+                        <div class="placeholder-text" data-i18n="food-placeholder">?</div>
+                        <img id="food-image" src="" alt="Food" style="display: none;">
+                    </div>
+                    <h2 id="food-name" class="food-name"></h2>
+                    <p id="food-category" class="food-category"></p>
                 </div>
-                <h2 id="food-name" class="food-name"></h2>
-                <p id="food-category" class="food-category"></p>
+
+                <button id="recommend-btn" data-i18n="food-btn">메뉴 추천받기</button>
+                <div class="comments-section"></div>
             </div>
 
-            <button id="recommend-btn" data-i18n="food-btn">메뉴 추천받기</button>
-            <div class="comments-section"></div>
+            <!-- Right Side: Info Panel -->
+            <div class="side-panel">
+                <!-- Service Updates -->
+                <div class="info-box">
+                    <h3 data-i18n="food-update-title">Service Updates</h3>
+                    <ul class="update-list">
+                        <li data-i18n="food-update-1">Random Food Recommendation</li>
+                        <li data-i18n="food-update-2">Utterance Comments</li>
+                        <li data-i18n="food-update-3">Food Image (Naver Search)</li>
+                    </ul>
+                </div>
+
+                <!-- Recipe -->
+                <div class="info-box">
+                    <h3 data-i18n="recipe-title">Recipe</h3>
+                    <div id="recipe-content" style="text-align: center; padding: 1rem;">
+                        <p data-i18n="recipe-placeholder" style="color: var(--text-color); opacity: 0.7;">Please recommend a menu first.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     <script type="module" src="nav.js"></script>

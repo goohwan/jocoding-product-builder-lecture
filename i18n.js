@@ -28,7 +28,15 @@ const translations = {
         "update-4": "Dark/Light Mode, i18n",
         "update-5": "Copy Numbers Function",
         "winning-title": "Recent Winning Numbers",
-        "check-winning-btn": "Check Previous Winning Numbers"
+        "check-winning-btn": "Check Previous Winning Numbers",
+        "food-update-title": "Service Updates",
+        "food-update-1": "Random Food Recommendation",
+        "food-update-2": "Utterance Comments",
+        "food-update-3": "Food Image (Naver Search)",
+        "recipe-title": "Recipe",
+        "recipe-placeholder": "Please recommend a menu first.",
+        "recipe-btn-youtube": "YouTube Recipe",
+        "recipe-btn-10000": "10000 Recipe"
     },
     ko: {
         "nav-home": "APBP",
@@ -59,7 +67,15 @@ const translations = {
         "update-4": "다크모드, 라이트모드, 한영변환",
         "update-5": "로또번호 복사기능",
         "winning-title": "최근 10회 당첨번호",
-        "check-winning-btn": "지난회차 당첨번호 확인하기"
+        "check-winning-btn": "지난회차 당첨번호 확인하기",
+        "food-update-title": "서비스 업데이트 내역",
+        "food-update-1": "음식 랜덤 추천 기능",
+        "food-update-2": "Utterance 댓글기능",
+        "food-update-3": "음식 이미지(네이버이미지) 추가",
+        "recipe-title": "레시피",
+        "recipe-placeholder": "메뉴를 먼저 추천받아주세요.",
+        "recipe-btn-youtube": "유튜브 레시피 보기",
+        "recipe-btn-10000": "만개의 레시피 보기"
     }
 };
 

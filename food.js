@@ -105,12 +105,31 @@ async function recommend() {
         
         // 5. Preload image before showing anything
         const img = new Image();
+        const updateRecipeLinks = () => {
+            const recipeContent = document.getElementById('recipe-content');
+            if (recipeContent) {
+                recipeContent.innerHTML = `
+                    <p style="margin-bottom: 1rem; font-weight: bold; font-size: 1.1rem;">${food.name}</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(food.name + ' 레시피')}" target="_blank" class="service-card" style="padding: 0.8rem; background-color: #ff0000; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                            <span data-i18n="recipe-btn-youtube">YouTube Recipe</span>
+                        </a>
+                        <a href="https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(food.name)}" target="_blank" class="service-card" style="padding: 0.8rem; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                            <span data-i18n="recipe-btn-10000">10000 Recipe</span>
+                        </a>
+                    </div>
+                `;
+                updateTexts(recipeContent);
+            }
+        };
+
         img.onload = () => {
             // Update Text and Image at the same time
             foodNameEl.textContent = food.name;
             foodCategoryEl.textContent = getCategoryName(food.category);
             foodImageEl.src = imageUrl;
             
+            updateRecipeLinks();
             recommendBtn.disabled = false;
         };
         img.onerror = () => {
@@ -118,6 +137,8 @@ async function recommend() {
             foodNameEl.textContent = food.name;
             foodCategoryEl.textContent = getCategoryName(food.category);
             foodImageEl.src = `https://via.placeholder.com/400x300?text=${encodeURIComponent(food.name)}`;
+            
+            updateRecipeLinks();
             recommendBtn.disabled = false;
         };
         img.src = imageUrl;
