@@ -27,7 +27,8 @@ const translations = {
         "update-3": "Added Utterances Comments",
         "update-4": "Dark/Light Mode, i18n",
         "update-5": "Copy Numbers Function",
-        "winning-title": "Recent Winning Numbers"
+        "winning-title": "Recent Winning Numbers",
+        "check-winning-btn": "Check Previous Winning Numbers"
     },
     ko: {
         "nav-home": "APBP",
@@ -57,7 +58,8 @@ const translations = {
         "update-3": "Utterance 댓글기능 추가",
         "update-4": "다크모드, 라이트모드, 한영변환",
         "update-5": "로또번호 복사기능",
-        "winning-title": "최근 10회 당첨번호"
+        "winning-title": "최근 10회 당첨번호",
+        "check-winning-btn": "지난회차 당첨번호 확인하기"
     }
 };
 
