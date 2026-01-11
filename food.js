@@ -164,3 +164,30 @@ async function fetchNaverImage(query, nth) {
 if (recommendBtn) {
     recommendBtn.addEventListener('click', recommend);
 }
+
+// Utterances Comments Logic
+function loadUtterances(theme) {
+    const commentsSection = document.querySelector('.comments-section');
+    if (!commentsSection) return;
+    commentsSection.innerHTML = ''; 
+
+    const script = document.createElement('script');
+    script.src = 'https://utteranc.es/client.js';
+    script.setAttribute('repo', 'goohwan/jocoding-product-builder-lecture');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'food'); // Label for food page
+    script.setAttribute('theme', theme);
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+
+    commentsSection.appendChild(script);
+}
+
+// Initialize Utterances and listen for theme changes
+const currentTheme = localStorage.getItem('theme') || 'dark';
+loadUtterances(currentTheme === 'dark' ? 'github-dark' : 'github-light');
+
+window.addEventListener('theme-changed', (e) => {
+    const theme = e.detail.theme;
+    loadUtterances(theme === 'dark' ? 'github-dark' : 'github-light');
+});

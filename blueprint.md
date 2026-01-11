@@ -62,3 +62,4 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
 *   **[Done]** **Fix Toggles**: Refactored `nav.js` to handle theme and language toggles internally, ensuring they work consistently across all pages without external dependencies.
 *   **[Done]** **Naver Image Search Integration**: Implemented Naver Search API (Image) logic to fetch real "Nth" search results using the provided Client ID and Secret. **Note:** Added `cors-anywhere` proxy to bypass browser CORS restrictions.
 *   **[Done]** **UI/UX Improvements**: Updated navigation service names for clarity ("Lotto Generator", "What to Eat?") and styled the food recommendation button to match the primary button style.
+*   **[Done]** **Add Comments**: Integrated Utterances comment system into the "What to Eat?" service, enabling user feedback and interaction.
