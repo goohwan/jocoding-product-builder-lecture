@@ -71,3 +71,10 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
     *   **Coming Soon**: A custom wide-format SVG illustration of a rocket ship in space.
     *   **Layout Change**: Refactored service cards to use full-width banner images (no padding) for better visual impact.
     *   **Independence**: Removed dependency on external Unsplash URLs for these assets, ensuring faster loading and consistent style.
+
+### Phase 7: Firebase Integration & Real-time Database (Current)
+*   **[Done]** **Firestore Setup**: Integrated Google Firebase Firestore to handle recipe data and menu recommendations in real-time.
+*   **[Done]** **Global "Auto Add" Feature**: Implemented logic to automatically add newly crawled recipes from "10,000 Recipes" to a global Firestore database, making them available to all users.
+*   **[Done]** **Migration Tool**: Created `migrate.html` to allow one-click synchronization of local `recipes.json` data to the cloud database.
+*   **[Done]** **Bilingual Support**: Ensured Firestore data retrieval works seamlessly with the existing i18n system for descriptions and titles.
+*   **[Planned]** **Initial Data Upload**: Execute migration to populate the Firestore database with initial 40+ recipes.
