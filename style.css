@@ -308,16 +308,47 @@ h1 {
 /* Side Panel Layout */
 .content-wrapper {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 1.5rem;
-    justify-content: center;
-    align-items: flex-start;
+    align-items: center; /* Center items on mobile */
+}
+
+/* Desktop Layout */
+@media (min-width: 1045px) {
+    .content-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 350px; /* Main column taking remaining space, fixed side width */
+        grid-template-rows: auto auto;
+        align-items: start;
+        justify-content: center;
+    }
+
+    .lotto-machine {
+        grid-column: 1;
+        grid-row: 1;
+        margin: 0 auto; /* Keep centered in its column */
+    }
+
+    .side-panel {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        width: 100%; /* Fill the grid cell */
+        max-width: none; /* Reset max-width restriction if any */
+    }
+
+    .comments-section {
+        grid-column: 1;
+        grid-row: 2;
+        /* Matches lotto-machine width/margin */
+        width: 90%; 
+        max-width: 600px; 
+        margin: 0 auto; 
+    }
 }
 
 .side-panel {
-    flex: 1;
-    min-width: 300px;
-    max-width: 400px;
+    width: 100%; /* Full width on mobile */
+    max-width: 600px; /* Limit width on mobile to match main board */
     display: flex;
     flex-direction: column;
     gap: 1.5rem;

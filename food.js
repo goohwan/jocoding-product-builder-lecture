@@ -145,22 +145,32 @@ async function recommend() {
 
                 let detailsHtml = '';
                 if (recipeData) {
-                    const ingredientsHtml = recipeData.ingredients.map(ing => `<li>${ing}</li>`).join('');
+                    // Update ingredients to be comma-separated list
+                    const ingredientsHtml = recipeData.ingredients.join(', ');
                     const instructionsHtml = recipeData.instructions.map(inst => `<li>${inst}</li>`).join('');
                     
+                    // Update Recipe Board Title
+                    const recipeTitleEl = document.querySelector('#recipe-board h3');
+                    if (recipeTitleEl) {
+                        const lang = localStorage.getItem('language') || 'ko';
+                        const suffix = lang === 'ko' ? ' 레시피' : ' Recipe';
+                        // Use food name (Korean default for now as keys are Korean)
+                        recipeTitleEl.textContent = food.name + suffix; 
+                    }
+
                     detailsHtml = `
                         <div id="recipe-details" style="margin-top: 1rem; text-align: left;">
                             <h4 style="margin-top: 1rem; color: var(--btn-bg); border-bottom: 1px solid #ddd; padding-bottom: 5px;">재료</h4>
-                            <ul class="recipe-list">${ingredientsHtml}</ul>
+                            <p style="margin-top: 0.5rem; line-height: 1.6; color: var(--text-color);">${ingredientsHtml}</p>
                             <h4 style="margin-top: 1rem; color: var(--btn-bg); border-bottom: 1px solid #ddd; padding-bottom: 5px;">조리방법</h4>
-                            <ol class="recipe-list">${instructionsHtml}</ol>
+                            <ol class="recipe-list" style="padding-left: 1.2rem;">${instructionsHtml}</ol>
                         </div>
                     `;
                 }
 
                 recipeContent.innerHTML = `
-                    <p style="margin-bottom: 0.5rem; font-weight: bold; font-size: 1.1rem;">${food.name}</p>
-                    <!-- Description removed from here as requested -->
+                    <!-- Food Name removed as requested -->
+                    <!-- Description removed as requested -->
                     
                     ${detailsHtml}
 
