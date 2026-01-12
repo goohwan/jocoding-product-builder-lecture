@@ -33,10 +33,12 @@ const translations = {
         "food-update-1": "Random Food Recommendation",
         "food-update-2": "Utterance Comments",
         "food-update-3": "Food Image (Naver Search)",
+        "food-update-4": "Recipe Guide Added",
         "recipe-title": "Recipe",
         "recipe-placeholder": "Please recommend a menu first.",
         "recipe-btn-youtube": "YouTube Recipe",
-        "recipe-btn-10000": "10000 Recipe"
+        "recipe-btn-10000": "10000 Recipe",
+        "food-btn-thinking": "Thinking... Please wait a moment"
     },
     ko: {
         "nav-home": "APBP with JoCoding",
@@ -72,10 +74,12 @@ const translations = {
         "food-update-1": "음식 랜덤 추천 기능",
         "food-update-2": "Utterance 댓글기능",
         "food-update-3": "음식 이미지(네이버이미지) 추가",
+        "food-update-4": "레시피 안내기능 추가",
         "recipe-title": "레시피",
         "recipe-placeholder": "메뉴를 먼저 추천받아주세요.",
         "recipe-btn-youtube": "유튜브 레시피 보기",
-        "recipe-btn-10000": "만개의 레시피 보기"
+        "recipe-btn-10000": "만개의 레시피 보기",
+        "food-btn-thinking": "고민중... 잠깐만 기다려줘"
     }
 };
 

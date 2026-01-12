@@ -107,6 +107,24 @@ function updateFoodDescription() {
 async function recommend() {
     // 1. Show Loading State (Thinking)
     recommendBtn.disabled = true;
+    
+    // Set button text to "Thinking... Please wait a moment" based on language
+    const lang = localStorage.getItem('language') || 'ko';
+    // Access translations directly if imported, but since they are not exported directly, 
+    // we can assume updateTexts works or just set it manually based on lang for now 
+    // or better, rely on a helper if available. 
+    // However, since we are inside recommend(), we can just use the i18n attribute update method 
+    // or manually set text content. 
+    // Let's use getAttribute data-i18n to switch temporarily.
+    // Actually, simpler: define the text map here or fetch from DOM if we had a hidden element.
+    // But since I added it to i18n.js, I can't access `translations` variable from here easily 
+    // unless I export it from i18n.js. 
+    // I'll modify i18n.js to export translations or just hardcode/check lang here for simplicity and robustness.
+    // Wait, I can't modify i18n.js again just for export without another tool call.
+    // I will use a simple check.
+    const thinkingText = lang === 'ko' ? "고민중... 잠깐만 기다려줘" : "Thinking... Please wait a moment";
+    recommendBtn.textContent = thinkingText;
+
     foodNameEl.textContent = "고민중..."; // "Thinking..."
     if (foodDescriptionEl) foodDescriptionEl.textContent = "";
     foodCategoryEl.textContent = "";
@@ -196,6 +214,10 @@ async function recommend() {
             
             updateRecipeLinks();
             recommendBtn.disabled = false;
+            // Revert button text
+            recommendBtn.textContent = lang === 'ko' ? "메뉴 추천받기" : "Recommend Menu";
+            // Ensure i18n attribute is respected if lang changes later
+            updateTexts(recommendBtn.parentElement); 
         };
         img.onerror = () => {
             console.error("Image load failed, using fallback.");
@@ -206,6 +228,7 @@ async function recommend() {
             
             updateRecipeLinks();
             recommendBtn.disabled = false;
+            recommendBtn.textContent = lang === 'ko' ? "메뉴 추천받기" : "Recommend Menu";
         };
         img.src = imageUrl;
     } catch (error) {
@@ -217,6 +240,7 @@ async function recommend() {
         foodCategoryEl.textContent = getCategoryName(food.category);
         foodImageEl.src = `https://via.placeholder.com/400x300?text=${encodeURIComponent(food.name)}`;
         recommendBtn.disabled = false;
+        recommendBtn.textContent = lang === 'ko' ? "메뉴 추천받기" : "Recommend Menu";
     }
 }
 
