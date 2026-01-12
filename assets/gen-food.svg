@@ -1,0 +1,47 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="plateGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="80%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#eeeeee;stop-opacity:1" />
+    </radialGradient>
+    <filter id="foodShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="1" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Plate -->
+  <circle cx="100" cy="100" r="90" fill="url(#plateGrad)" stroke="#e0e0e0" stroke-width="4"/>
+  <circle cx="100" cy="100" r="75" fill="#fafafa" stroke="#eee" stroke-width="1"/>
+
+  <!-- Lettuce Leaves -->
+  <g filter="url(#foodShadow)">
+    <path d="M60 100 Q40 60 80 70 Q100 50 120 70 Q160 60 140 100 Q160 140 120 130 Q100 150 80 130 Q40 140 60 100 Z" fill="#81c784" />
+    <path d="M70 90 Q60 70 80 80 Q90 60 110 80 Q130 70 120 100 Q130 120 100 110 Q80 120 70 100 Z" fill="#4caf50" />
+  </g>
+
+  <!-- Tomato -->
+  <circle cx="90" cy="90" r="15" fill="#e53935" filter="url(#foodShadow)"/>
+  <path d="M90 90 L85 85" stroke="#ff8a80" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Egg -->
+  <g transform="translate(120, 110) rotate(-15)" filter="url(#foodShadow)">
+    <ellipse cx="0" cy="0" rx="18" ry="22" fill="#fff" stroke="#eee" stroke-width="1"/>
+    <circle cx="0" cy="2" r="10" fill="#ffb74d" />
+  </g>
+  
+  <!-- Carrot Slices -->
+  <circle cx="130" cy="80" r="8" fill="#ff9800" filter="url(#foodShadow)"/>
+  <circle cx="70" cy="120" r="8" fill="#ff9800" filter="url(#foodShadow)"/>
+
+  <!-- Fork (Simplified) -->
+  <path d="M160 50 L150 150" stroke="#bdbdbd" stroke-width="6" stroke-linecap="round"/>
+  <path d="M160 50 L155 30 M160 50 L160 30 M160 50 L165 30" stroke="#bdbdbd" stroke-width="3" stroke-linecap="round"/>
+</svg>

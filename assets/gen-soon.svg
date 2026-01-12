@@ -1,0 +1,49 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rocketBody" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f44336;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#d32f2f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b71c1c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="fire" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffeb3b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff5722;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Dark Background Circle -->
+  <circle cx="100" cy="100" r="95" fill="#263238" />
+
+  <!-- Stars -->
+  <circle cx="50" cy="50" r="2" fill="#fff" opacity="0.8" />
+  <circle cx="150" cy="40" r="1.5" fill="#fff" opacity="0.6" />
+  <circle cx="30" cy="120" r="1" fill="#fff" opacity="0.5" />
+  <circle cx="170" cy="130" r="2" fill="#fff" opacity="0.7" />
+  <circle cx="100" cy="180" r="1.5" fill="#fff" opacity="0.4" />
+
+  <!-- Rocket Group -->
+  <g transform="translate(100, 100) rotate(45)">
+    <!-- Flame -->
+    <path d="M-10 30 Q0 60 10 30 Q0 40 -10 30" fill="url(#fire)" filter="url(#glow)" />
+    
+    <!-- Wings -->
+    <path d="M-20 20 L-25 40 L-10 30 Z" fill="#d32f2f" />
+    <path d="M20 20 L25 40 L10 30 Z" fill="#d32f2f" />
+
+    <!-- Body -->
+    <ellipse cx="0" cy="0" rx="20" ry="40" fill="url(#rocketBody)" />
+    
+    <!-- Window -->
+    <circle cx="0" cy="-10" r="10" fill="#b3e5fc" stroke="#546e7a" stroke-width="2" />
+  </g>
+  
+  <!-- Text -->
+  <text x="100" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="16" fill="#fff" letter-spacing="2">COMING SOON</text>
+</svg>
