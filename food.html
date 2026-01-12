@@ -32,24 +32,23 @@
 
             <!-- Right Side: Info Panel -->
             <div class="side-panel">
-                <!-- Service Updates -->
-                <div class="info-box">
-                    <h3 data-i18n="food-update-title">Service Updates</h3>
-                    <ul class="update-list">
-                        <li data-i18n="food-update-1">Random Food Recommendation</li>
-                        <li data-i18n="food-update-2">Utterance Comments</li>
-                        <li data-i18n="food-update-3">Food Image (Naver Search)</li>
-                    </ul>
-                </div>
-
-                <!-- Recipe -->
-                <div class="info-box">
+                <div class="info-box" id="recipe-board">
                     <h3 data-i18n="recipe-title">Recipe</h3>
-                    <div id="recipe-content" style="text-align: center; padding: 1rem;">
-                        <p data-i18n="recipe-placeholder" style="color: var(--text-color); opacity: 0.7;">Please recommend a menu first.</p>
+                    <div id="recipe-content">
+                        <p class="placeholder-text-small" data-i18n="recipe-placeholder">Please recommend a menu first.</p>
+                        <!-- Recipe details will be injected here -->
+                        <div id="recipe-details" style="display: none;">
+                            <h4 style="margin-top: 1rem; color: var(--btn-bg);">재료</h4>
+                            <ul id="recipe-ingredients" class="recipe-list"></ul>
+                            <h4 style="margin-top: 1rem; color: var(--btn-bg);">조리방법</h4>
+                            <ol id="recipe-instructions" class="recipe-list"></ol>
+                        </div>
                     </div>
                 </div>
-            </div>
+                
+                <div class="info-box">
+                    <h3 data-i18n="food-update-title">Service Updates</h3>
+
         </div>
     </main>
     <script type="module" src="nav.js"></script>

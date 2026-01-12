@@ -11,7 +11,15 @@ const foods = {
         { name: "떡볶이", en: "Tteokbokki", recipe: "Simmer rice cakes and fish cakes in spicy gochujang broth." },
         { name: "순두부찌개", en: "Sundubu Jjigae", recipe: "Boil soft tofu, clams, and egg in spicy broth." },
         { name: "갈비탕", en: "Galbitang", recipe: "Simmer beef short ribs with radish and green onions for a long time." },
-        { name: "냉면", en: "Naengmyeon", recipe: "Boil buckwheat noodles and serve in chilled beef broth with cucumber and egg." }
+        { name: "냉면", en: "Naengmyeon", recipe: "Boil buckwheat noodles and serve in chilled beef broth with cucumber and egg." },
+        { name: "김밥", en: "Kimbap", recipe: "Roll rice, vegetables, egg, and ham in dried seaweed." },
+        { name: "감자탕", en: "Gamjatang", recipe: "Boil pork backbone with potatoes, greens, and perilla powder in spicy broth." },
+        { name: "콩비지찌개", en: "Kongbiji Jjigae", recipe: "Simmer ground soybeans with kimchi and pork." },
+        { name: "계란찜", en: "Gyeran Jjim", recipe: "Steam beaten eggs with water, scallions, and salt until fluffy." },
+        { name: "청국장", en: "Cheonggukjang", recipe: "Boil extra-strong fermented soybean paste with tofu and zucchini." },
+        { name: "비빔국수", en: "Bibim Guksu", recipe: "Mix wheat noodles with spicy gochujang sauce and vegetables." },
+        { name: "잔치국수", en: "Janchi Guksu", recipe: "Serve wheat noodles in hot anchovy broth with zucchini and egg garnish." },
+        { name: "간장국수", en: "Ganjang Guksu", recipe: "Mix wheat noodles with soy sauce, sesame oil, and sugar." }
     ],
     chinese: [
         { name: "짜장면", en: "Jajangmyeon", recipe: "Stir-fry black bean paste with pork and onions, serve over noodles." },
@@ -41,7 +49,8 @@ const foods = {
         { name: "샐러드", en: "Salad", recipe: "Toss fresh vegetables/fruits with dressing and optional protein." },
         { name: "리조또", en: "Risotto", recipe: "Sauté rice with butter/onion, slowly add broth while stirring until creamy." },
         { name: "샌드위치", en: "Sandwich", recipe: "Place meat, cheese, and vegetables between bread slices." },
-        { name: "그라탕", en: "Gratin", recipe: "Bake macaroni or potatoes with white sauce and cheese until golden." }
+        { name: "그라탕", en: "Gratin", recipe: "Bake macaroni or potatoes with white sauce and cheese until golden." },
+        { name: "감바스", en: "Gambas al Ajillo", recipe: "Cook shrimp in olive oil with plenty of garlic and chili peppers." }
     ]
 };
 
@@ -105,13 +114,40 @@ async function recommend() {
         
         // 5. Preload image before showing anything
         const img = new Image();
-        const updateRecipeLinks = () => {
+        const updateRecipeLinks = async () => {
             const recipeContent = document.getElementById('recipe-content');
             if (recipeContent) {
+                let recipeData = null;
+                try {
+                    const response = await fetch('recipes.json');
+                    const allRecipes = await response.json();
+                    recipeData = allRecipes[food.name];
+                } catch (e) {
+                    console.error("Failed to load recipes.json", e);
+                }
+
+                let detailsHtml = '';
+                if (recipeData) {
+                    const ingredientsHtml = recipeData.ingredients.map(ing => `<li>${ing}</li>`).join('');
+                    const instructionsHtml = recipeData.instructions.map(inst => `<li>${inst}</li>`).join('');
+                    
+                    detailsHtml = `
+                        <div id="recipe-details" style="margin-top: 1rem; text-align: left;">
+                            <h4 style="margin-top: 1rem; color: var(--btn-bg); border-bottom: 1px solid #ddd; padding-bottom: 5px;">재료</h4>
+                            <ul class="recipe-list">${ingredientsHtml}</ul>
+                            <h4 style="margin-top: 1rem; color: var(--btn-bg); border-bottom: 1px solid #ddd; padding-bottom: 5px;">조리방법</h4>
+                            <ol class="recipe-list">${instructionsHtml}</ol>
+                        </div>
+                    `;
+                }
+
                 recipeContent.innerHTML = `
                     <p style="margin-bottom: 0.5rem; font-weight: bold; font-size: 1.1rem;">${food.name}</p>
                     <p style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-color); line-height: 1.4;">${food.recipe}</p>
-                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                    
+                    ${detailsHtml}
+
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.5rem;">
                         <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(food.name + ' 레시피')}" target="_blank" class="service-card" style="padding: 0.8rem; background-color: #ff0000; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
                             <span data-i18n="recipe-btn-youtube">YouTube Recipe</span>
                         </a>

@@ -413,3 +413,14 @@ h1 {
     background-color: rgba(128,128,128,0.4);
     border-radius: 3px;
 }
+
+.recipe-list {
+    padding-left: 1.2rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+
+.recipe-list li {
+    margin-bottom: 0.4rem;
+}
