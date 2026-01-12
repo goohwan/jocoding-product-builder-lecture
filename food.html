@@ -32,6 +32,15 @@
 
             <!-- Right Side: Info Panel -->
             <div class="side-panel">
+                <!-- Recipe Search -->
+                <div class="info-box" style="padding-bottom: 1rem;">
+                    <h3 data-i18n="recipe-search-title">Search Recipe</h3>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <input type="text" id="recipe-search-input" placeholder="메뉴명 입력" style="flex: 1; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                        <button id="recipe-search-btn" style="background-color: var(--btn-bg); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">🔍</button>
+                    </div>
+                </div>
+
                 <div class="info-box" id="recipe-board">
                     <h3 data-i18n="recipe-title">Recipe</h3>
                     <div id="recipe-content">

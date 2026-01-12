@@ -313,6 +313,241 @@ window.addEventListener('theme-changed', (e) => {
 });
 
 // Listen for language changes
+
 window.addEventListener('language-changed', () => {
+
     updateFoodDescription();
+
 });
+
+
+
+// Recipe Search Logic (Crawling 10000 Recipe)
+
+const recipeSearchBtn = document.getElementById('recipe-search-btn');
+
+const recipeSearchInput = document.getElementById('recipe-search-input');
+
+
+
+async function crawl10000Recipe(query) {
+
+    const proxyUrl = "https://corsproxy.io/?";
+
+    const searchUrl = `https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(query)}`;
+
+    
+
+    try {
+
+        // 1. Search List Page
+
+        const listResponse = await fetch(proxyUrl + encodeURIComponent(searchUrl));
+
+        const listText = await listResponse.text();
+
+        const parser = new DOMParser();
+
+        const listDoc = parser.parseFromString(listText, 'text/html');
+
+        
+
+        // Find first recipe link
+
+        // Selector: .common_sp_list_ul .common_sp_list_li .common_sp_thumb a
+
+        const firstRecipeLink = listDoc.querySelector('.common_sp_list_ul .common_sp_list_li .common_sp_thumb a');
+
+        
+
+        if (!firstRecipeLink) {
+
+            throw new Error("Recipe not found");
+
+        }
+
+        
+
+        const detailUrl = "https://www.10000recipe.com" + firstRecipeLink.getAttribute('href');
+
+        
+
+        // 2. Fetch Detail Page
+
+        const detailResponse = await fetch(proxyUrl + encodeURIComponent(detailUrl));
+
+        const detailText = await detailResponse.text();
+
+        const detailDoc = parser.parseFromString(detailText, 'text/html');
+
+        
+
+        // 3. Extract Ingredients
+
+        // Selector: #divConfirmedMaterialArea li
+
+        // Text format: "Potato 3ea" (We need to clean whitespace)
+
+        const ingredientNodes = detailDoc.querySelectorAll('#divConfirmedMaterialArea ul li');
+
+        const ingredients = Array.from(ingredientNodes).map(li => {
+
+            const name = li.querySelector('.ingre_list_name_a')?.textContent?.trim() || 
+
+                         li.childNodes[0]?.textContent?.trim(); // Fallback
+
+            const unit = li.querySelector('.ingre_list_unit')?.textContent?.trim() || "";
+
+            return name && unit ? `${name} ${unit}` : (name || li.textContent.trim());
+
+        }).filter(text => text && text.length > 0);
+
+
+
+        // 4. Extract Instructions
+
+        // Selector: .view_step .media-body
+
+        const stepNodes = detailDoc.querySelectorAll('.view_step .media-body');
+
+        const instructions = Array.from(stepNodes).map(div => div.textContent.trim());
+
+
+
+        return {
+
+            name: query,
+
+            ingredients: ingredients,
+
+            instructions: instructions
+
+        };
+
+
+
+    } catch (error) {
+
+        console.error("Crawling failed:", error);
+
+        return null;
+
+    }
+
+}
+
+
+
+async function handleRecipeSearch() {
+
+    const query = recipeSearchInput.value.trim();
+
+    if (!query) return;
+
+
+
+    recipeSearchBtn.disabled = true;
+
+    recipeSearchBtn.textContent = "...";
+
+    
+
+    // Clear current board
+
+    const recipeContent = document.getElementById('recipe-content');
+
+    const recipeTitleEl = document.querySelector('#recipe-board h3');
+
+    recipeContent.innerHTML = '<p class="placeholder-text-small">Searching...</p>';
+
+
+
+    const result = await crawl10000Recipe(query);
+
+    
+
+    if (result) {
+
+        if (recipeTitleEl) {
+
+            const lang = localStorage.getItem('language') || 'ko';
+
+            recipeTitleEl.textContent = result.name + (lang === 'ko' ? ' 레시피' : ' Recipe');
+
+        }
+
+
+
+        const ingredientsHtml = result.ingredients.join(', ');
+
+        const instructionsHtml = result.instructions.map(inst => `<li>${inst}</li>`).join('');
+
+
+
+        recipeContent.innerHTML = `
+
+            <div id="recipe-details" style="margin-top: 1rem; text-align: left;">
+
+                <h4 style="margin-top: 1rem; color: var(--btn-bg); border-bottom: 1px solid #ddd; padding-bottom: 5px;">재료</h4>
+
+                <p style="margin-top: 0.5rem; line-height: 1.6; color: var(--text-color);">${ingredientsHtml}</p>
+
+                <h4 style="margin-top: 1rem; color: var(--btn-bg); border-bottom: 1px solid #ddd; padding-bottom: 5px;">조리방법</h4>
+
+                <ol class="recipe-list" style="padding-left: 1.2rem;">${instructionsHtml}</ol>
+
+            </div>
+
+            
+
+            <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.5rem;">
+
+                 <a href="https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(query)}" target="_blank" class="service-card" style="padding: 0.8rem; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+
+                    <span data-i18n="recipe-btn-10000">10000 Recipe (View Original)</span>
+
+                </a>
+
+            </div>
+
+        `;
+
+        updateTexts(recipeContent); // Apply i18n to new button if needed
+
+    } else {
+
+        recipeContent.innerHTML = `
+
+            <p class="placeholder-text-small" style="color: red;">Recipe not found.</p>
+
+            <a href="https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(query)}" target="_blank" style="display:block; margin-top:10px; color: var(--btn-bg); text-decoration: underline;">
+
+                Search on 10000 Recipe directly
+
+            </a>
+
+        `;
+
+    }
+
+
+
+    recipeSearchBtn.disabled = false;
+
+    recipeSearchBtn.textContent = "🔍";
+
+}
+
+
+
+if (recipeSearchBtn) {
+
+    recipeSearchBtn.addEventListener('click', handleRecipeSearch);
+
+    recipeSearchInput.addEventListener('keypress', (e) => {
+
+        if (e.key === 'Enter') handleRecipeSearch();
+
+    });
+
+}
