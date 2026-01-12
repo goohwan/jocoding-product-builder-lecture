@@ -1,4 +1,5 @@
 import { updateTexts } from './i18n.js';
+import { db, doc, getDoc, setDoc, collection, getDocs } from './firebase.js';
 
 const foods = {
     korean: [
@@ -57,14 +58,24 @@ const foods = {
 
 let categories = ['korean', 'chinese', 'japanese', 'western'];
 
-// Load custom foods from local storage
-function loadCustomFoods() {
-    const customFoods = JSON.parse(localStorage.getItem('custom_food_items') || '[]');
-    if (customFoods.length > 0) {
-        foods.auto = customFoods;
-        if (!categories.includes('auto')) {
-            categories.push('auto');
+// Load custom foods from Firestore (Global "Auto Add")
+async function loadCustomFoods() {
+    if (!db) return; // Firebase not configured
+    try {
+        const querySnapshot = await getDocs(collection(db, "food_items"));
+        const customFoods = [];
+        querySnapshot.forEach((doc) => {
+            customFoods.push(doc.data());
+        });
+        
+        if (customFoods.length > 0) {
+            foods.auto = customFoods;
+            if (!categories.includes('auto')) {
+                categories.push('auto');
+            }
         }
+    } catch (e) {
+        console.error("Error loading custom foods from Firestore:", e);
     }
 }
 loadCustomFoods(); // Init
@@ -248,13 +259,21 @@ async function fetchNaverImage(query, nth) {
 // ==========================================
 
 async function getRecipeData(query) {
-    // 1. Check LocalStorage (Custom Recipes)
-    const customRecipes = JSON.parse(localStorage.getItem('custom_recipes') || '{}');
-    if (customRecipes[query]) {
-        return customRecipes[query];
+    // 1. Check Firestore
+    if (db) {
+        try {
+            const docRef = doc(db, "recipes", query);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                console.log("Recipe found in Firestore:", query);
+                return docSnap.data();
+            }
+        } catch (e) {
+            console.error("Firestore read error:", e);
+        }
     }
 
-    // 2. Check recipes.json
+    // 2. Check recipes.json (Fallback)
     try {
         const response = await fetch('recipes.json');
         const allRecipes = await response.json();
@@ -268,30 +287,38 @@ async function getRecipeData(query) {
     return null;
 }
 
-function saveCustomRecipe(query, data) {
-    // Save Recipe Data
-    const customRecipes = JSON.parse(localStorage.getItem('custom_recipes') || '{}');
-    customRecipes[query] = data;
-    localStorage.setItem('custom_recipes', JSON.stringify(customRecipes));
+async function saveCustomRecipe(query, data) {
+    if (!db) {
+        console.warn("Firebase not configured. Cannot save recipe.");
+        return;
+    }
 
-    // Save Food Item Data (Auto Add Category)
-    const customFoods = JSON.parse(localStorage.getItem('custom_food_items') || '[]');
-    // Check if already exists
-    if (!customFoods.some(f => f.name === query)) {
-        customFoods.push({
+    try {
+        // Save Recipe Data to 'recipes' collection
+        await setDoc(doc(db, "recipes", query), data);
+        console.log("Recipe saved to Firestore:", query);
+
+        // Save Food Item to 'food_items' collection (Global Auto Add)
+        const foodItem = {
             name: query,
             en: query, // Use name as EN name fallback
             descEn: "User added recipe.",
             descKo: "사용자가 직접 검색하여 추가된 레시피입니다.",
             category: "auto"
-        });
-        localStorage.setItem('custom_food_items', JSON.stringify(customFoods));
+        };
+        await setDoc(doc(db, "food_items", query), foodItem);
         
-        // Update current runtime list
-        foods.auto = customFoods;
+        // Update local state immediately
+        if (!foods.auto) foods.auto = [];
+        // Avoid duplicate push if already exists in memory
+        if (!foods.auto.some(f => f.name === query)) {
+            foods.auto.push(foodItem);
+        }
         if (!categories.includes('auto')) {
             categories.push('auto');
         }
+    } catch (e) {
+        console.error("Firestore write error:", e);
     }
 }
 

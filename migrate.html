@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migrate Recipes to Firestore</title>
+</head>
+<body>
+    <h1>Recipe Migration Tool</h1>
+    <p>Click the button below to upload recipes.json to your Firestore.</p>
+    <button id="migrate-btn">Start Migration</button>
+    <div id="status"></div>
+
+    <script type="module">
+        import { db, doc, setDoc } from './firebase.js';
+
+        const btn = document.getElementById('migrate-btn');
+        const status = document.getElementById('status');
+
+        btn.addEventListener('click', async () => {
+            if (!db) {
+                status.textContent = "Firebase not initialized. Check firebase.js.";
+                return;
+            }
+
+            status.textContent = "Loading recipes.json...";
+            try {
+                const response = await fetch('recipes.json');
+                const recipes = await response.json();
+                
+                status.textContent = `Found ${Object.keys(recipes).length} recipes. Uploading...`;
+                
+                let count = 0;
+                for (const [name, data] of Object.entries(recipes)) {
+                    await setDoc(doc(db, "recipes", name), data);
+                    count++;
+                    status.textContent = `Uploaded ${count} / ${Object.keys(recipes).length}: ${name}`;
+                }
+                
+                status.textContent = "Migration Complete! All recipes uploaded.";
+            } catch (e) {
+                status.textContent = "Error: " + e.message;
+                console.error(e);
+            }
+        });
+    </script>
+</body>
+</html>
