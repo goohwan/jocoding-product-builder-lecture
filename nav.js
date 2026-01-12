@@ -107,6 +107,7 @@ class AppNav extends HTMLElement {
         langSelector.addEventListener('change', (e) => {
             setLanguage(e.target.value);
             initializeI18n(); // Update all texts on the page
+            window.dispatchEvent(new CustomEvent('language-changed', { detail: { language: e.target.value } }));
         });
 
         // Set initial value for lang selector

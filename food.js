@@ -2,55 +2,55 @@ import { updateTexts } from './i18n.js';
 
 const foods = {
     korean: [
-        { name: "김치찌개", en: "Kimchi Stew", recipe: "Boil kimchi, pork, tofu, and onions in water with gochujang." },
-        { name: "된장찌개", en: "Doenjang Stew", recipe: "Boil soybean paste, tofu, zucchini, and mushrooms in anchovy broth." },
-        { name: "비빔밥", en: "Bibimbap", recipe: "Mix rice with sautéed vegetables, beef, fried egg, and gochujang." },
-        { name: "불고기", en: "Bulgogi", recipe: "Marinate thin beef slices in soy sauce, sugar, garlic, and sesame oil, then grill." },
-        { name: "삼겹살", en: "Samgyeopsal", recipe: "Grill pork belly slices and eat with lettuce, garlic, and ssamjang." },
-        { name: "제육볶음", en: "Jeyuk Bokkeum", recipe: "Stir-fry pork with spicy gochujang sauce and vegetables." },
-        { name: "떡볶이", en: "Tteokbokki", recipe: "Simmer rice cakes and fish cakes in spicy gochujang broth." },
-        { name: "순두부찌개", en: "Sundubu Jjigae", recipe: "Boil soft tofu, clams, and egg in spicy broth." },
-        { name: "갈비탕", en: "Galbitang", recipe: "Simmer beef short ribs with radish and green onions for a long time." },
-        { name: "냉면", en: "Naengmyeon", recipe: "Boil buckwheat noodles and serve in chilled beef broth with cucumber and egg." },
-        { name: "김밥", en: "Kimbap", recipe: "Roll rice, vegetables, egg, and ham in dried seaweed." },
-        { name: "감자탕", en: "Gamjatang", recipe: "Boil pork backbone with potatoes, greens, and perilla powder in spicy broth." },
-        { name: "콩비지찌개", en: "Kongbiji Jjigae", recipe: "Simmer ground soybeans with kimchi and pork." },
-        { name: "계란찜", en: "Gyeran Jjim", recipe: "Steam beaten eggs with water, scallions, and salt until fluffy." },
-        { name: "청국장", en: "Cheonggukjang", recipe: "Boil extra-strong fermented soybean paste with tofu and zucchini." },
-        { name: "비빔국수", en: "Bibim Guksu", recipe: "Mix wheat noodles with spicy gochujang sauce and vegetables." },
-        { name: "잔치국수", en: "Janchi Guksu", recipe: "Serve wheat noodles in hot anchovy broth with zucchini and egg garnish." },
-        { name: "간장국수", en: "Ganjang Guksu", recipe: "Mix wheat noodles with soy sauce, sesame oil, and sugar." }
+        { name: "김치찌개", en: "Kimchi Stew", descEn: "Boil kimchi, pork, tofu, and onions in water with gochujang.", descKo: "김치와 돼지고기, 두부를 넣고 얼큰하게 끓여낸 한국인의 소울 푸드." },
+        { name: "된장찌개", en: "Doenjang Stew", descEn: "Boil soybean paste, tofu, zucchini, and mushrooms in anchovy broth.", descKo: "구수한 된장 국물에 두부와 각종 야채를 넣어 끓인 찌개." },
+        { name: "비빔밥", en: "Bibimbap", descEn: "Mix rice with sautéed vegetables, beef, fried egg, and gochujang.", descKo: "따뜻한 밥 위에 각종 나물과 고기, 계란후라이를 얹어 고추장에 비벼 먹는 요리." },
+        { name: "불고기", en: "Bulgogi", descEn: "Marinate thin beef slices in soy sauce, sugar, garlic, and sesame oil, then grill.", descKo: "얇게 썬 소고기를 달콤 짭짤한 양념에 재워 구워낸 고기 요리." },
+        { name: "삼겹살", en: "Samgyeopsal", descEn: "Grill pork belly slices and eat with lettuce, garlic, and ssamjang.", descKo: "노릇하게 구운 돼지고기 삼겹살을 상추에 싸서 먹는 인기 외식 메뉴." },
+        { name: "제육볶음", en: "Jeyuk Bokkeum", descEn: "Stir-fry pork with spicy gochujang sauce and vegetables.", descKo: "매콤한 고추장 양념에 돼지고기와 야채를 볶아낸 밥도둑." },
+        { name: "떡볶이", en: "Tteokbokki", descEn: "Simmer rice cakes and fish cakes in spicy gochujang broth.", descKo: "매콤달콤한 고추장 소스에 떡과 어묵을 넣어 끓인 국민 간식." },
+        { name: "순두부찌개", en: "Sundubu Jjigae", descEn: "Boil soft tofu, clams, and egg in spicy broth.", descKo: "부드러운 순두부와 해산물을 넣어 얼큰하게 끓인 찌개." },
+        { name: "갈비탕", en: "Galbitang", descEn: "Simmer beef short ribs with radish and green onions for a long time.", descKo: "소갈비를 푹 고아내어 국물이 진하고 고기가 부드러운 보양식." },
+        { name: "냉면", en: "Naengmyeon", descEn: "Boil buckwheat noodles and serve in chilled beef broth with cucumber and egg.", descKo: "시원한 육수나 매콤한 양념에 쫄깃한 메밀면을 즐기는 여름 별미." },
+        { name: "김밥", en: "Kimbap", descEn: "Roll rice, vegetables, egg, and ham in dried seaweed.", descKo: "밥과 여러 가지 재료를 김으로 말아 썰어 먹는 간편하고 든든한 한 끼." },
+        { name: "감자탕", en: "Gamjatang", descEn: "Boil pork backbone with potatoes, greens, and perilla powder in spicy broth.", descKo: "돼지 등뼈와 감자, 우거지를 넣고 얼큰하게 끓여낸 탕 요리." },
+        { name: "콩비지찌개", en: "Kongbiji Jjigae", descEn: "Simmer ground soybeans with kimchi and pork.", descKo: "곱게 간 콩비지에 돼지고기와 김치를 넣어 고소하고 담백하게 끓인 찌개." },
+        { name: "계란찜", en: "Gyeran Jjim", descEn: "Steam beaten eggs with water, scallions, and salt until fluffy.", descKo: "계란을 부드럽게 풀어 쪄낸, 남녀노소 누구나 좋아하는 반찬." },
+        { name: "청국장", en: "Cheonggukjang", descEn: "Boil extra-strong fermented soybean paste with tofu and zucchini.", descKo: "진한 청국장 콩의 구수함과 두부의 부드러움이 어우러진 건강식." },
+        { name: "비빔국수", en: "Bibim Guksu", descEn: "Mix wheat noodles with spicy gochujang sauce and vegetables.", descKo: "매콤새콤한 양념장에 소면과 야채를 비벼 입맛 돋우는 국수." },
+        { name: "잔치국수", en: "Janchi Guksu", descEn: "Serve wheat noodles in hot anchovy broth with zucchini and egg garnish.", descKo: "따뜻한 멸치 육수에 소면을 말아 호로록 먹는 잔치 음식." },
+        { name: "간장국수", en: "Ganjang Guksu", descEn: "Mix wheat noodles with soy sauce, sesame oil, and sugar.", descKo: "짭조름한 간장과 고소한 참기름으로 맛을 낸 담백한 국수." }
     ],
     chinese: [
-        { name: "짜장면", en: "Jajangmyeon", recipe: "Stir-fry black bean paste with pork and onions, serve over noodles." },
-        { name: "짬뽕", en: "Jjamppong", recipe: "Stir-fry seafood and vegetables, then boil in spicy broth with noodles." },
-        { name: "탕수육", en: "Tangsuyuk", recipe: "Deep-fry pork coated in starch, serve with sweet and sour sauce." },
-        { name: "마파두부", en: "Mapo Tofu", recipe: "Stir-fry tofu and minced meat in spicy chili bean sauce." },
-        { name: "양꼬치", en: "Lamb Skewers", recipe: "Skewer lamb cubes, season with cumin, and grill over charcoal." },
-        { name: "볶음밥", en: "Fried Rice", recipe: "Stir-fry rice with egg, green onions, and vegetables/meat." },
-        { name: "유린기", en: "Yuringi", recipe: "Deep-fry chicken and serve with fresh vegetables and soy-vinegar sauce." },
-        { name: "깐풍기", en: "Kkanpunggi", recipe: "Deep-fry chicken and stir-fry in spicy garlic sauce." }
+        { name: "짜장면", en: "Jajangmyeon", descEn: "Stir-fry black bean paste with pork and onions, serve over noodles.", descKo: "춘장에 돼지고기와 야채를 볶아 만든 소스를 면에 비벼 먹는 중식의 대명사." },
+        { name: "짬뽕", en: "Jjamppong", descEn: "Stir-fry seafood and vegetables, then boil in spicy broth with noodles.", descKo: "각종 해산물과 야채를 볶아 만든 얼큰하고 시원한 국물 요리." },
+        { name: "탕수육", en: "Tangsuyuk", descEn: "Deep-fry pork coated in starch, serve with sweet and sour sauce.", descKo: "돼지고기에 튀김옷을 입혀 바삭하게 튀겨내어 새콤달콤한 소스를 곁들인 요리." },
+        { name: "마파두부", en: "Mapo Tofu", descEn: "Stir-fry tofu and minced meat in spicy chili bean sauce.", descKo: "두부와 다진 고기를 매콤한 두반장 소스에 볶아낸 밥도둑." },
+        { name: "양꼬치", en: "Lamb Skewers", descEn: "Skewer lamb cubes, season with cumin, and grill over charcoal.", descKo: "양고기를 꼬치에 꿰어 숯불에 구워 쯔란에 찍어 먹는 별미." },
+        { name: "볶음밥", en: "Fried Rice", descEn: "Stir-fry rice with egg, green onions, and vegetables/meat.", descKo: "밥과 계란, 각종 야채를 고슬고슬하게 볶아낸 든든한 한 끼." },
+        { name: "유린기", en: "Yuringi", descEn: "Deep-fry chicken and serve with fresh vegetables and soy-vinegar sauce.", descKo: "바삭하게 튀긴 닭고기에 아삭한 야채와 새콤한 간장 소스를 곁들인 요리." },
+        { name: "깐풍기", en: "Kkanpunggi", descEn: "Deep-fry chicken and stir-fry in spicy garlic sauce.", descKo: "튀긴 닭고기를 매콤한 마늘 소스에 빠르게 볶아낸 중화요리." }
     ],
     japanese: [
-        { name: "초밥", en: "Sushi", recipe: "Place fresh sashimi on seasoned rice balls." },
-        { name: "라멘", en: "Ramen", recipe: "Boil noodles in pork/miso broth with chashu, egg, and bamboo shoots." },
-        { name: "우동", en: "Udon", recipe: "Boil thick wheat noodles in soy-dashi broth with fish cakes." },
-        { name: "돈까스", en: "Tonkatsu", recipe: "Bread pork cutlets with panko and deep-fry." },
-        { name: "규동", en: "Gyudon", recipe: "Simmer thin beef and onions in sweet soy sauce, serve over rice." },
-        { name: "가츠동", en: "Katsudon", recipe: "Simmer tonkatsu and egg in dashi sauce, serve over rice." },
-        { name: "소바", en: "Soba", recipe: "Boil buckwheat noodles, serve cold with dipping sauce or in hot broth." },
-        { name: "타코야끼", en: "Takoyaki", recipe: "Cook batter with octopus chunks in a special mold, top with sauce and flakes." }
+        { name: "초밥", en: "Sushi", descEn: "Place fresh sashimi on seasoned rice balls.", descKo: "새콤달콤하게 간을 한 밥 위에 신선한 생선회를 얹어 먹는 요리." },
+        { name: "라멘", en: "Ramen", descEn: "Boil noodles in pork/miso broth with chashu, egg, and bamboo shoots.", descKo: "진한 육수에 쫄깃한 면발과 차슈, 계란 등을 올려 먹는 일본식 국수." },
+        { name: "우동", en: "Udon", descEn: "Boil thick wheat noodles in soy-dashi broth with fish cakes.", descKo: "오동통한 면발과 시원한 가쓰오부시 국물이 일품인 따뜻한 면 요리." },
+        { name: "돈까스", en: "Tonkatsu", descEn: "Bread pork cutlets with panko and deep-fry.", descKo: "두툼한 돼지고기에 빵가루를 입혀 바삭하게 튀겨낸 인기 메뉴." },
+        { name: "규동", en: "Gyudon", descEn: "Simmer thin beef and onions in sweet soy sauce, serve over rice.", descKo: "얇게 썬 소고기와 양파를 달콤 짭짤한 간장 소스에 졸여 밥 위에 얹은 덮밥." },
+        { name: "가츠동", en: "Katsudon", descEn: "Simmer tonkatsu and egg in dashi sauce, serve over rice.", descKo: "바삭한 돈까스와 부드러운 계란을 소스에 졸여 밥 위에 얹은 덮밥." },
+        { name: "소바", en: "Soba", descEn: "Boil buckwheat noodles, serve cold with dipping sauce or in hot broth.", descKo: "메밀 향이 가득한 면을 시원한 쯔유 소스에 적셔 먹는 깔끔한 맛." },
+        { name: "타코야끼", en: "Takoyaki", descEn: "Cook batter with octopus chunks in a special mold, top with sauce and flakes.", descKo: "밀가루 반죽 안에 문어를 넣고 동그랗게 구워낸 일본식 간식." }
     ],
     western: [
-        { name: "피자", en: "Pizza", recipe: "Top dough with tomato sauce, cheese, and toppings, then bake." },
-        { name: "파스타", en: "Pasta", recipe: "Boil pasta and toss with tomato, cream, or oil-based sauce." },
-        { name: "스테이크", en: "Steak", recipe: "Season beef steak with salt/pepper and sear in a pan or grill." },
-        { name: "햄버거", en: "Hamburger", recipe: "Grill beef patty, assemble in bun with lettuce, tomato, and sauce." },
-        { name: "샐러드", en: "Salad", recipe: "Toss fresh vegetables/fruits with dressing and optional protein." },
-        { name: "리조또", en: "Risotto", recipe: "Sauté rice with butter/onion, slowly add broth while stirring until creamy." },
-        { name: "샌드위치", en: "Sandwich", recipe: "Place meat, cheese, and vegetables between bread slices." },
-        { name: "그라탕", en: "Gratin", recipe: "Bake macaroni or potatoes with white sauce and cheese until golden." },
-        { name: "감바스", en: "Gambas al Ajillo", recipe: "Cook shrimp in olive oil with plenty of garlic and chili peppers." }
+        { name: "피자", en: "Pizza", descEn: "Top dough with tomato sauce, cheese, and toppings, then bake.", descKo: "도우 위에 토마토 소스와 치즈, 다양한 토핑을 얹어 구워낸 요리." },
+        { name: "파스타", en: "Pasta", descEn: "Boil pasta and toss with tomato, cream, or oil-based sauce.", descKo: "다양한 소스와 재료를 면과 함께 볶거나 끓여낸 이탈리아 면 요리." },
+        { name: "스테이크", en: "Steak", descEn: "Season beef steak with salt/pepper and sear in a pan or grill.", descKo: "두툼한 소고기를 그릴이나 팬에 구워 육즙을 즐기는 고급진 요리." },
+        { name: "햄버거", en: "Hamburger", descEn: "Grill beef patty, assemble in bun with lettuce, tomato, and sauce.", descKo: "빵 사이에 고기 패티와 신선한 야채, 소스를 넣어 먹는 든든한 샌드위치." },
+        { name: "샐러드", en: "Salad", descEn: "Toss fresh vegetables/fruits with dressing and optional protein.", descKo: "신선한 채소와 과일, 드레싱이 어우러져 가볍고 건강하게 즐기는 메뉴." },
+        { name: "리조또", en: "Risotto", descEn: "Sauté rice with butter/onion, slowly add broth while stirring until creamy.", descKo: "쌀을 버터에 볶다가 육수를 부어 크림처럼 부드럽게 익힌 쌀 요리." },
+        { name: "샌드위치", en: "Sandwich", descEn: "Place meat, cheese, and vegetables between bread slices.", descKo: "식빵 사이에 햄, 치즈, 야채 등 좋아하는 재료를 넣어 만든 간편식." },
+        { name: "그라탕", en: "Gratin", descEn: "Bake macaroni or potatoes with white sauce and cheese until golden.", descKo: "재료 위에 화이트 소스와 치즈를 듬뿍 얹어 오븐에 노릇하게 구운 요리." },
+        { name: "감바스", en: "Gambas al Ajillo", descEn: "Cook shrimp in olive oil with plenty of garlic and chili peppers.", descKo: "올리브 오일에 마늘과 새우를 넣고 끓여 빵과 함께 먹는 스페인 요리." }
     ]
 };
 
@@ -64,6 +64,7 @@ const NAVER_CLIENT_SECRET = "BeDbva4IA5";
 
 const recommendBtn = document.getElementById('recommend-btn');
 const foodNameEl = document.getElementById('food-name');
+const foodDescriptionEl = document.getElementById('food-description');
 const foodCategoryEl = document.getElementById('food-category');
 const foodImageEl = document.getElementById('food-image');
 const placeholderText = document.querySelector('.placeholder-text');
@@ -71,6 +72,8 @@ const foodImageContainer = document.getElementById('food-image-container');
 
 // Anime girl thinking image
 const THINKING_IMAGE_URL = "https://image.pollinations.ai/prompt/cute_anime_girl_thinking_about_food_question_mark_cartoon_style?width=400&height=300&nologo=true";
+
+let currentFood = null;
 
 function getRandomFood() {
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
@@ -89,10 +92,23 @@ function getCategoryName(category) {
     return names[category];
 }
 
+function updateFoodDescription() {
+    if (!currentFood) return;
+    const lang = localStorage.getItem('language') || 'ko';
+    if (foodDescriptionEl) {
+        foodDescriptionEl.textContent = lang === 'ko' ? currentFood.descKo : currentFood.descEn;
+    }
+    // Update name if needed (English name usually same as Korean in UI for now, but we have 'en' field)
+    // Currently foodNameEl always shows Korean name 'name'. If we want bilingual name:
+    // foodNameEl.textContent = lang === 'ko' ? currentFood.name : currentFood.en;
+    // But user asked for Description specifically. Keeping name as is (Korean key) for now unless requested.
+}
+
 async function recommend() {
     // 1. Show Loading State (Thinking)
     recommendBtn.disabled = true;
     foodNameEl.textContent = "고민중..."; // "Thinking..."
+    if (foodDescriptionEl) foodDescriptionEl.textContent = "";
     foodCategoryEl.textContent = "";
     
     // Hide previous image, show placeholder or thinking image
@@ -105,6 +121,7 @@ async function recommend() {
 
     // 3. Pick Random Food
     const food = getRandomFood();
+    currentFood = food; // Store for language switching
     
     // 4. Fetch "Nth" Image from Naver Search API
     const nth = Math.floor(Math.random() * 10) + 1;
@@ -143,7 +160,7 @@ async function recommend() {
 
                 recipeContent.innerHTML = `
                     <p style="margin-bottom: 0.5rem; font-weight: bold; font-size: 1.1rem;">${food.name}</p>
-                    <p style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-color); line-height: 1.4;">${food.recipe}</p>
+                    <!-- Description removed from here as requested -->
                     
                     ${detailsHtml}
 
@@ -163,6 +180,7 @@ async function recommend() {
         img.onload = () => {
             // Update Text and Image at the same time
             foodNameEl.textContent = food.name;
+            updateFoodDescription(); // Set description based on language
             foodCategoryEl.textContent = getCategoryName(food.category);
             foodImageEl.src = imageUrl;
             
@@ -172,6 +190,7 @@ async function recommend() {
         img.onerror = () => {
             console.error("Image load failed, using fallback.");
             foodNameEl.textContent = food.name;
+            updateFoodDescription();
             foodCategoryEl.textContent = getCategoryName(food.category);
             foodImageEl.src = `https://via.placeholder.com/400x300?text=${encodeURIComponent(food.name)}`;
             
@@ -184,6 +203,7 @@ async function recommend() {
         
         // Fallback: Show text and placeholder if search fails
         foodNameEl.textContent = food.name;
+        updateFoodDescription();
         foodCategoryEl.textContent = getCategoryName(food.category);
         foodImageEl.src = `https://via.placeholder.com/400x300?text=${encodeURIComponent(food.name)}`;
         recommendBtn.disabled = false;
@@ -256,4 +276,9 @@ loadUtterances(currentTheme === 'dark' ? 'github-dark' : 'github-light');
 window.addEventListener('theme-changed', (e) => {
     const theme = e.detail.theme;
     loadUtterances(theme === 'dark' ? 'github-dark' : 'github-light');
+});
+
+// Listen for language changes
+window.addEventListener('language-changed', () => {
+    updateFoodDescription();
 });
