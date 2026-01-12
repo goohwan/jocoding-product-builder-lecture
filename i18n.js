@@ -40,7 +40,8 @@ const translations = {
         "recipe-btn-10000": "10000 Recipe",
         "food-btn-thinking": "Thinking... Please wait a moment",
         "recipe-search-title": "Search Recipe",
-        "recipe-search-placeholder": "Enter menu name"
+        "recipe-search-placeholder": "Enter menu name",
+        "category-auto": "Auto Added"
     },
     ko: {
         "nav-home": "APBP with JoCoding",
@@ -83,7 +84,8 @@ const translations = {
         "recipe-btn-10000": "만개의 레시피 보기",
         "food-btn-thinking": "고민중... 잠깐만 기다려줘",
         "recipe-search-title": "레시피 검색",
-        "recipe-search-placeholder": "메뉴명 입력"
+        "recipe-search-placeholder": "메뉴명 입력",
+        "category-auto": "자동추가"
     }
 };
 

@@ -105,14 +105,24 @@ function getRandomFood() {
 }
 
 function getCategoryName(category) {
+    const lang = localStorage.getItem('language') || 'ko';
     const names = {
-        korean: "한식",
-        chinese: "중식",
-        japanese: "일식",
-        western: "양식",
-        auto: "자동추가"
+        ko: {
+            korean: "한식",
+            chinese: "중식",
+            japanese: "일식",
+            western: "양식",
+            auto: "자동추가"
+        },
+        en: {
+            korean: "Korean",
+            chinese: "Chinese",
+            japanese: "Japanese",
+            western: "Western",
+            auto: "Auto Added"
+        }
     };
-    return names[category] || category;
+    return names[lang][category] || category;
 }
 
 function updateFoodDescription() {
