@@ -57,8 +57,6 @@ const foods = {
 const categories = ['korean', 'chinese', 'japanese', 'western'];
 
 // Naver Search API Configuration
-// Note: Calling this API directly from the frontend may cause CORS errors.
-// It is recommended to use a backend proxy for production.
 const NAVER_CLIENT_ID = "Ufnci94HHyrKm_r0wmyj";
 const NAVER_CLIENT_SECRET = "BeDbva4IA5";
 
@@ -98,81 +96,52 @@ function updateFoodDescription() {
     if (foodDescriptionEl) {
         foodDescriptionEl.textContent = lang === 'ko' ? currentFood.descKo : currentFood.descEn;
     }
-    // Update name if needed (English name usually same as Korean in UI for now, but we have 'en' field)
-    // Currently foodNameEl always shows Korean name 'name'. If we want bilingual name:
-    // foodNameEl.textContent = lang === 'ko' ? currentFood.name : currentFood.en;
-    // But user asked for Description specifically. Keeping name as is (Korean key) for now unless requested.
 }
 
 async function recommend() {
     // 1. Show Loading State (Thinking)
     recommendBtn.disabled = true;
-    
-    // Set button text to "Thinking... Please wait a moment" based on language
     const lang = localStorage.getItem('language') || 'ko';
-    // Access translations directly if imported, but since they are not exported directly, 
-    // we can assume updateTexts works or just set it manually based on lang for now 
-    // or better, rely on a helper if available. 
-    // However, since we are inside recommend(), we can just use the i18n attribute update method 
-    // or manually set text content. 
-    // Let's use getAttribute data-i18n to switch temporarily.
-    // Actually, simpler: define the text map here or fetch from DOM if we had a hidden element.
-    // But since I added it to i18n.js, I can't access `translations` variable from here easily 
-    // unless I export it from i18n.js. 
-    // I'll modify i18n.js to export translations or just hardcode/check lang here for simplicity and robustness.
-    // Wait, I can't modify i18n.js again just for export without another tool call.
-    // I will use a simple check.
     const thinkingText = lang === 'ko' ? "고민중... 잠깐만 기다려줘" : "Thinking... Please wait a moment";
     recommendBtn.textContent = thinkingText;
 
-    foodNameEl.textContent = "고민중..."; // "Thinking..."
+    foodNameEl.textContent = "고민중..."; 
     if (foodDescriptionEl) foodDescriptionEl.textContent = "";
     foodCategoryEl.textContent = "";
     
-    // Hide previous image, show placeholder or thinking image
     placeholderText.style.display = 'none';
     foodImageEl.style.display = 'block';
-    foodImageEl.src = THINKING_IMAGE_URL; // Show thinking girl
+    foodImageEl.src = THINKING_IMAGE_URL; 
 
-    // 2. Wait for a moment to simulate "thinking" time
+    // 2. Wait
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     // 3. Pick Random Food
     const food = getRandomFood();
-    currentFood = food; // Store for language switching
+    currentFood = food; 
     
-    // 4. Fetch "Nth" Image from Naver Search API
+    // 4. Fetch Image
     const nth = Math.floor(Math.random() * 10) + 1;
     
     try {
         const imageUrl = await fetchNaverImage(food.name, nth);
-        
-        // 5. Preload image before showing anything
         const img = new Image();
+        
+        // Load Recipe Data (Priority: Local Custom -> recipes.json)
         const updateRecipeLinks = async () => {
             const recipeContent = document.getElementById('recipe-content');
             if (recipeContent) {
-                let recipeData = null;
-                try {
-                    const response = await fetch('recipes.json');
-                    const allRecipes = await response.json();
-                    recipeData = allRecipes[food.name];
-                } catch (e) {
-                    console.error("Failed to load recipes.json", e);
-                }
+                let recipeData = await getRecipeData(food.name); // Unified loader
 
                 let detailsHtml = '';
                 if (recipeData) {
-                    // Update ingredients to be comma-separated list
                     const ingredientsHtml = recipeData.ingredients.join(', ');
                     const instructionsHtml = recipeData.instructions.map(inst => `<li>${inst}</li>`).join('');
                     
-                    // Update Recipe Board Title
                     const recipeTitleEl = document.querySelector('#recipe-board h3');
                     if (recipeTitleEl) {
                         const lang = localStorage.getItem('language') || 'ko';
                         const suffix = lang === 'ko' ? ' 레시피' : ' Recipe';
-                        // Use food name (Korean default for now as keys are Korean)
                         recipeTitleEl.textContent = food.name + suffix; 
                     }
 
@@ -187,11 +156,7 @@ async function recommend() {
                 }
 
                 recipeContent.innerHTML = `
-                    <!-- Food Name removed as requested -->
-                    <!-- Description removed as requested -->
-                    
                     ${detailsHtml}
-
                     <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.5rem;">
                         <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(food.name + ' 레시피')}" target="_blank" class="service-card" style="padding: 0.8rem; background-color: #ff0000; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
                             <span data-i18n="recipe-btn-youtube">YouTube Recipe</span>
@@ -206,17 +171,14 @@ async function recommend() {
         };
 
         img.onload = () => {
-            // Update Text and Image at the same time
             foodNameEl.textContent = food.name;
-            updateFoodDescription(); // Set description based on language
+            updateFoodDescription(); 
             foodCategoryEl.textContent = getCategoryName(food.category);
             foodImageEl.src = imageUrl;
             
             updateRecipeLinks();
             recommendBtn.disabled = false;
-            // Revert button text
             recommendBtn.textContent = lang === 'ko' ? "메뉴 추천받기" : "Recommend Menu";
-            // Ensure i18n attribute is respected if lang changes later
             updateTexts(recommendBtn.parentElement); 
         };
         img.onerror = () => {
@@ -233,8 +195,6 @@ async function recommend() {
         img.src = imageUrl;
     } catch (error) {
         console.error("Search failed:", error);
-        
-        // Fallback: Show text and placeholder if search fails
         foodNameEl.textContent = food.name;
         updateFoodDescription();
         foodCategoryEl.textContent = getCategoryName(food.category);
@@ -245,7 +205,6 @@ async function recommend() {
 }
 
 async function fetchNaverImage(query, nth) {
-    // Using 'corsproxy.io' which is more stable and doesn't require manual activation like cors-anywhere.
     const proxyUrl = "https://corsproxy.io/?";
     const targetUrl = `https://openapi.naver.com/v1/search/image?query=${encodeURIComponent(query)}&display=10&start=${nth}&sort=sim`;
     
@@ -258,296 +217,167 @@ async function fetchNaverImage(query, nth) {
             }
         });
 
-        if (!response.ok) {
-            throw new Error(`Naver API Error: ${response.statusText}`);
-        }
-
+        if (!response.ok) throw new Error(`Naver API Error: ${response.statusText}`);
         const data = await response.json();
-        
-        if (!data.items || data.items.length === 0) {
-            throw new Error("No results found");
-        }
-        
-        // Pick the first item since we requested display=1 with an offset of 'nth'
-        // Use weserv.nl as an image proxy to handle HTTPS/SSL issues and mixed content
-        // weserv takes the url without protocol
+        if (!data.items || data.items.length === 0) throw new Error("No results found");
         const originalUrl = data.items[0].link;
         const cleanUrl = originalUrl.replace(/^https?:\/\//, '');
         return `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}&w=400&h=300&fit=cover`;
-
     } catch (error) {
         console.error("Fetch error:", error);
         throw error;
     }
 }
 
-if (recommendBtn) {
-    recommendBtn.addEventListener('click', recommend);
+// ==========================================
+// Recipe Data Management (JSON + LocalStorage)
+// ==========================================
+
+async function getRecipeData(query) {
+    // 1. Check LocalStorage (Custom Recipes)
+    const customRecipes = JSON.parse(localStorage.getItem('custom_recipes') || '{}');
+    if (customRecipes[query]) {
+        return customRecipes[query];
+    }
+
+    // 2. Check recipes.json
+    try {
+        const response = await fetch('recipes.json');
+        const allRecipes = await response.json();
+        if (allRecipes[query]) {
+            return allRecipes[query];
+        }
+    } catch (e) {
+        console.error("Failed to load recipes.json", e);
+    }
+    
+    return null;
 }
 
-// Utterances Comments Logic
-function loadUtterances(theme) {
-    const commentsSection = document.querySelector('.comments-section');
-    if (!commentsSection) return;
-    commentsSection.innerHTML = ''; 
-
-    const script = document.createElement('script');
-    script.src = 'https://utteranc.es/client.js';
-    script.setAttribute('repo', 'goohwan/jocoding-product-builder-lecture');
-    script.setAttribute('issue-term', 'pathname');
-    script.setAttribute('label', 'food'); // Label for food page
-    script.setAttribute('theme', theme);
-    script.setAttribute('crossorigin', 'anonymous');
-    script.async = true;
-
-    commentsSection.appendChild(script);
+function saveCustomRecipe(query, data) {
+    const customRecipes = JSON.parse(localStorage.getItem('custom_recipes') || '{}');
+    customRecipes[query] = data;
+    localStorage.setItem('custom_recipes', JSON.stringify(customRecipes));
 }
-
-// Initialize Utterances and listen for theme changes
-const currentTheme = localStorage.getItem('theme') || 'dark';
-loadUtterances(currentTheme === 'dark' ? 'github-dark' : 'github-light');
-
-window.addEventListener('theme-changed', (e) => {
-    const theme = e.detail.theme;
-    loadUtterances(theme === 'dark' ? 'github-dark' : 'github-light');
-});
-
-// Listen for language changes
-
-window.addEventListener('language-changed', () => {
-
-    updateFoodDescription();
-
-});
-
-
-
-// Recipe Search Logic (Crawling 10000 Recipe)
-
-const recipeSearchBtn = document.getElementById('recipe-search-btn');
-
-const recipeSearchInput = document.getElementById('recipe-search-input');
-
-
 
 async function crawl10000Recipe(query) {
-
     const proxyUrl = "https://corsproxy.io/?";
-
     const searchUrl = `https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(query)}`;
-
     
-
     try {
-
-        // 1. Search List Page
-
         const listResponse = await fetch(proxyUrl + encodeURIComponent(searchUrl));
-
         const listText = await listResponse.text();
-
         const parser = new DOMParser();
-
         const listDoc = parser.parseFromString(listText, 'text/html');
-
         
-
-        // Find first recipe link
-
-        // Selector: .common_sp_list_ul .common_sp_list_li .common_sp_thumb a
-
         const firstRecipeLink = listDoc.querySelector('.common_sp_list_ul .common_sp_list_li .common_sp_thumb a');
-
+        if (!firstRecipeLink) throw new Error("Recipe not found");
         
-
-        if (!firstRecipeLink) {
-
-            throw new Error("Recipe not found");
-
-        }
-
-        
-
         const detailUrl = "https://www.10000recipe.com" + firstRecipeLink.getAttribute('href');
-
-        
-
-        // 2. Fetch Detail Page
-
         const detailResponse = await fetch(proxyUrl + encodeURIComponent(detailUrl));
-
         const detailText = await detailResponse.text();
-
         const detailDoc = parser.parseFromString(detailText, 'text/html');
-
         
-
-        // 3. Extract Ingredients
-
-        // Selector: #divConfirmedMaterialArea li
-
-        // Text format: "Potato 3ea" (We need to clean whitespace)
-
         const ingredientNodes = detailDoc.querySelectorAll('#divConfirmedMaterialArea ul li');
-
         const ingredients = Array.from(ingredientNodes).map(li => {
-
             const name = li.querySelector('.ingre_list_name_a')?.textContent?.trim() || 
-
-                         li.childNodes[0]?.textContent?.trim(); // Fallback
-
+                         li.childNodes[0]?.textContent?.trim(); 
             const unit = li.querySelector('.ingre_list_unit')?.textContent?.trim() || "";
-
             return name && unit ? `${name} ${unit}` : (name || li.textContent.trim());
-
         }).filter(text => text && text.length > 0);
 
-
-
-        // 4. Extract Instructions
-
-        // Selector: .view_step .media-body
-
         const stepNodes = detailDoc.querySelectorAll('.view_step .media-body');
-
         const instructions = Array.from(stepNodes).map(div => div.textContent.trim());
 
-
-
         return {
-
-            name: query,
-
             ingredients: ingredients,
-
             instructions: instructions
-
         };
 
-
-
     } catch (error) {
-
         console.error("Crawling failed:", error);
-
         return null;
-
     }
-
 }
 
+// ==========================================
+// Search Event Listener
+// ==========================================
 
+const recipeSearchBtn = document.getElementById('recipe-search-btn');
+const recipeSearchInput = document.getElementById('recipe-search-input');
 
 async function handleRecipeSearch() {
-
     const query = recipeSearchInput.value.trim();
-
     if (!query) return;
 
-
-
     recipeSearchBtn.disabled = true;
-
     recipeSearchBtn.textContent = "...";
-
     
-
-    // Clear current board
-
     const recipeContent = document.getElementById('recipe-content');
-
     const recipeTitleEl = document.querySelector('#recipe-board h3');
-
     recipeContent.innerHTML = '<p class="placeholder-text-small">Searching...</p>';
 
+    // 1. Try to get data from local sources first
+    let result = await getRecipeData(query);
 
-
-    const result = await crawl10000Recipe(query);
-
+    // 2. If not found, crawl
+    if (!result) {
+        result = await crawl10000Recipe(query);
+        // 3. If crawled successfully, save it!
+        if (result) {
+            saveCustomRecipe(query, result);
+        }
+    }
     
-
     if (result) {
-
         if (recipeTitleEl) {
-
             const lang = localStorage.getItem('language') || 'ko';
-
-            recipeTitleEl.textContent = result.name + (lang === 'ko' ? ' 레시피' : ' Recipe');
-
+            recipeTitleEl.textContent = query + (lang === 'ko' ? ' 레시피' : ' Recipe');
         }
 
-
-
         const ingredientsHtml = result.ingredients.join(', ');
-
         const instructionsHtml = result.instructions.map(inst => `<li>${inst}</li>`).join('');
 
-
-
         recipeContent.innerHTML = `
-
             <div id="recipe-details" style="margin-top: 1rem; text-align: left;">
-
                 <h4 style="margin-top: 1rem; color: var(--btn-bg); border-bottom: 1px solid #ddd; padding-bottom: 5px;">재료</h4>
-
                 <p style="margin-top: 0.5rem; line-height: 1.6; color: var(--text-color);">${ingredientsHtml}</p>
-
                 <h4 style="margin-top: 1rem; color: var(--btn-bg); border-bottom: 1px solid #ddd; padding-bottom: 5px;">조리방법</h4>
-
                 <ol class="recipe-list" style="padding-left: 1.2rem;">${instructionsHtml}</ol>
-
             </div>
-
             
-
             <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.5rem;">
-
                  <a href="https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(query)}" target="_blank" class="service-card" style="padding: 0.8rem; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-
                     <span data-i18n="recipe-btn-10000">10000 Recipe (View Original)</span>
-
                 </a>
-
             </div>
-
         `;
-
-        updateTexts(recipeContent); // Apply i18n to new button if needed
-
+        updateTexts(recipeContent); 
     } else {
-
         recipeContent.innerHTML = `
-
             <p class="placeholder-text-small" style="color: red;">Recipe not found.</p>
-
             <a href="https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(query)}" target="_blank" style="display:block; margin-top:10px; color: var(--btn-bg); text-decoration: underline;">
-
                 Search on 10000 Recipe directly
-
             </a>
-
         `;
-
     }
 
-
-
     recipeSearchBtn.disabled = false;
-
     recipeSearchBtn.textContent = "🔍";
-
 }
 
-
-
 if (recipeSearchBtn) {
-
     recipeSearchBtn.addEventListener('click', handleRecipeSearch);
-
     recipeSearchInput.addEventListener('keypress', (e) => {
-
         if (e.key === 'Enter') handleRecipeSearch();
-
     });
+}
 
+// Initial Listener
+window.addEventListener('language-changed', () => {
+    updateFoodDescription();
+});
+if (recommendBtn) {
+    recommendBtn.addEventListener('click', recommend);
 }
