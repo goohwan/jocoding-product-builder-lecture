@@ -51,10 +51,23 @@ const foods = {
         { name: "샌드위치", en: "Sandwich", descEn: "Place meat, cheese, and vegetables between bread slices.", descKo: "식빵 사이에 햄, 치즈, 야채 등 좋아하는 재료를 넣어 만든 간편식." },
         { name: "그라탕", en: "Gratin", descEn: "Bake macaroni or potatoes with white sauce and cheese until golden.", descKo: "재료 위에 화이트 소스와 치즈를 듬뿍 얹어 오븐에 노릇하게 구운 요리." },
         { name: "감바스", en: "Gambas al Ajillo", descEn: "Cook shrimp in olive oil with plenty of garlic and chili peppers.", descKo: "올리브 오일에 마늘과 새우를 넣고 끓여 빵과 함께 먹는 스페인 요리." }
-    ]
+    ],
+    auto: [] // New "Auto Add" category
 };
 
-const categories = ['korean', 'chinese', 'japanese', 'western'];
+let categories = ['korean', 'chinese', 'japanese', 'western'];
+
+// Load custom foods from local storage
+function loadCustomFoods() {
+    const customFoods = JSON.parse(localStorage.getItem('custom_food_items') || '[]');
+    if (customFoods.length > 0) {
+        foods.auto = customFoods;
+        if (!categories.includes('auto')) {
+            categories.push('auto');
+        }
+    }
+}
+loadCustomFoods(); // Init
 
 // Naver Search API Configuration
 const NAVER_CLIENT_ID = "Ufnci94HHyrKm_r0wmyj";
@@ -85,9 +98,10 @@ function getCategoryName(category) {
         korean: "한식",
         chinese: "중식",
         japanese: "일식",
-        western: "양식"
+        western: "양식",
+        auto: "자동추가"
     };
-    return names[category];
+    return names[category] || category;
 }
 
 function updateFoodDescription() {
@@ -255,9 +269,30 @@ async function getRecipeData(query) {
 }
 
 function saveCustomRecipe(query, data) {
+    // Save Recipe Data
     const customRecipes = JSON.parse(localStorage.getItem('custom_recipes') || '{}');
     customRecipes[query] = data;
     localStorage.setItem('custom_recipes', JSON.stringify(customRecipes));
+
+    // Save Food Item Data (Auto Add Category)
+    const customFoods = JSON.parse(localStorage.getItem('custom_food_items') || '[]');
+    // Check if already exists
+    if (!customFoods.some(f => f.name === query)) {
+        customFoods.push({
+            name: query,
+            en: query, // Use name as EN name fallback
+            descEn: "User added recipe.",
+            descKo: "사용자가 직접 검색하여 추가된 레시피입니다.",
+            category: "auto"
+        });
+        localStorage.setItem('custom_food_items', JSON.stringify(customFoods));
+        
+        // Update current runtime list
+        foods.auto = customFoods;
+        if (!categories.includes('auto')) {
+            categories.push('auto');
+        }
+    }
 }
 
 async function crawl10000Recipe(query) {
