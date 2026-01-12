@@ -1,6 +1,6 @@
 const translations = {
     en: {
-        "nav-home": "APBP",
+        "nav-home": "APBP with JoCoding",
         "nav-lotto": "Lotto Generator",
         "nav-food": "What to Eat?",
         "nav-privacy": "Privacy",
@@ -39,7 +39,7 @@ const translations = {
         "recipe-btn-10000": "10000 Recipe"
     },
     ko: {
-        "nav-home": "APBP",
+        "nav-home": "APBP with JoCoding",
         "nav-lotto": "로또 번호 생성기",
         "nav-food": "오늘 뭐 먹지?",
         "nav-privacy": "개인정보처리방침",

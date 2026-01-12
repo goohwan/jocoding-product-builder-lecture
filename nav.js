@@ -83,7 +83,7 @@ class AppNav extends HTMLElement {
                 }
             </style>
             <nav class="main-nav">
-                <a href="index.html" class="nav-logo" data-i18n="nav-home">APBP</a>
+                <a href="index.html" class="nav-logo" data-i18n="nav-home">APBP with JoCoding</a>
                 <div class="nav-links">
                     <a href="lotto.html" data-i18n="nav-lotto">Lotto</a>
                     <a href="food.html" data-i18n="nav-food">Food</a>
