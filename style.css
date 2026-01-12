@@ -318,7 +318,7 @@ h1 {
     .content-wrapper {
         display: grid;
         grid-template-columns: 1fr 350px; /* Main column taking remaining space, fixed side width */
-        grid-template-rows: auto auto;
+        grid-template-rows: max-content min-content; /* Ensure first row fits content tightly */
         align-items: start;
         justify-content: center;
     }
