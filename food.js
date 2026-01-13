@@ -1,5 +1,5 @@
 import { updateTexts } from './i18n.js';
-import { db, doc, getDoc, setDoc, collection, getDocs } from './firebase.js';
+import { db, doc, getDoc, setDoc, collection, getDocs, updateDoc } from './firebase.js';
 
 const foods = {
     korean: [
@@ -66,18 +66,34 @@ async function loadCustomFoods() {
     if (!db) return; // Firebase not configured
     try {
         const querySnapshot = await getDocs(collection(db, "food_items"));
-        const customFoods = [];
+        
         querySnapshot.forEach((doc) => {
-            customFoods.push(doc.data());
+            const data = doc.data();
+            const cat = data.category || 'auto'; // Default to auto
+            
+            // Check if this food name already exists in ANY category
+            let exists = false;
+            for (const c of Object.keys(foods)) {
+                if (foods[c].some(f => f.name === data.name)) {
+                    exists = true;
+                    // If existing one is in 'auto' but DB says different category, move it?
+                    // For now, let's assume hardcoded > DB for name existence,
+                    // but we might want to prioritize DB category if it was updated.
+                    // Simplified: If exists, skip adding. (Resolves duplication)
+                    break;
+                }
+            }
+            
+            if (!exists) {
+                if (!foods[cat]) foods[cat] = [];
+                foods[cat].push(data);
+                if (!categories.includes(cat)) {
+                    categories.push(cat);
+                }
+            }
         });
         
-        if (customFoods.length > 0) {
-            foods.auto = customFoods;
-            if (!categories.includes('auto')) {
-                categories.push('auto');
-            }
-            renderAdminMenuList(); // Update admin list with loaded data
-        }
+        renderAdminMenuList(); // Update admin list with loaded data
     } catch (e) {
         console.error("Error loading custom foods from Firestore:", e);
     }
@@ -505,7 +521,50 @@ function renderAdminMenuList() {
 
         foods[category].forEach(food => {
             const item = document.createElement('li');
-            item.textContent = `- ${food.name}`;
+            item.style.marginBottom = "0.2rem";
+            item.style.display = "flex";
+            item.style.alignItems = "center";
+            item.style.gap = "0.5rem";
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = `- ${food.name}`;
+            item.appendChild(nameSpan);
+
+            // Add Move Category UI only for 'auto' items (or all items if needed, but mainly for auto)
+            // Since we can only update items that exist in DB, and primarily 'auto' items are in DB.
+            // But now items moved from auto to other cats are also in DB.
+            // So we check if it's likely a DB item. 
+            // Ideally we should flag DB items, but for now let's allow moving ONLY for 'auto' category for simplicity,
+            // OR check if we can update it. 
+            // Let's enable it for 'auto' category specifically as per request.
+            if (category === 'auto') {
+                const select = document.createElement('select');
+                select.style.fontSize = "0.7rem";
+                select.style.padding = "0";
+                
+                ['korean', 'chinese', 'japanese', 'western'].forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c;
+                    option.textContent = getCategoryName(c);
+                    select.appendChild(option);
+                });
+
+                const moveBtn = document.createElement('button');
+                moveBtn.textContent = "Move";
+                moveBtn.style.fontSize = "0.7rem";
+                moveBtn.style.padding = "0 2px";
+                moveBtn.style.cursor = "pointer";
+                
+                moveBtn.onclick = async () => {
+                    moveBtn.disabled = true;
+                    moveBtn.textContent = "...";
+                    await updateFoodCategory(food.name, select.value);
+                };
+
+                item.appendChild(select);
+                item.appendChild(moveBtn);
+            }
+
             catList.appendChild(item);
         });
 
@@ -520,6 +579,24 @@ function renderAdminMenuList() {
         listDiv.appendChild(catDiv);
     }
     container.appendChild(listDiv);
+}
+
+async function updateFoodCategory(foodName, newCategory) {
+    if (!db) {
+        alert("Database not connected.");
+        return;
+    }
+    try {
+        const docRef = doc(db, "food_items", foodName);
+        await updateDoc(docRef, {
+            category: newCategory
+        });
+        alert(`Moved ${foodName} to ${getCategoryName(newCategory)}. Reloading...`);
+        location.reload(); // Reload to reflect changes
+    } catch (e) {
+        console.error("Error updating category:", e);
+        alert("Failed to update category. Item might not exist in DB.");
+    }
 }
 
 // Initial render
