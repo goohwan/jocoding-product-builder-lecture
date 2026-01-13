@@ -487,6 +487,7 @@ function renderAdminMenuList() {
     title.style.cursor = "pointer";
     title.style.marginBottom = "0.5rem";
     title.style.fontWeight = "bold";
+    title.style.color = "#888"; // 어두운 색상으로 변경
     title.onclick = () => {
         const listDiv = document.getElementById('admin-menu-items');
         if(listDiv) {
