@@ -41,4 +41,36 @@ function generateSingleSet() {
     return Array.from(numbers).sort((a, b) => a - b);
 }
 
-export { getLuckyNumbers };
+// Fetch latest winning numbers from dhlottery API via proxy
+async function getLatestWinningNumbers() {
+    const startDate = new Date('2002-12-07T20:40:00'); // 1st draw date
+    const now = new Date();
+    const diffTime = Math.abs(now - startDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    let drawNo = Math.floor(diffDays / 7) + 1;
+
+    let data = await fetchLottoData(drawNo);
+    
+    // If future draw or not yet updated, try previous one
+    if (!data || data.returnValue === "fail") {
+        data = await fetchLottoData(drawNo - 1);
+    }
+    
+    return data;
+}
+
+async function fetchLottoData(drwNo) {
+    const proxyUrl = "https://corsproxy.io/?";
+    const targetUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drwNo}`;
+    
+    try {
+        const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
+        const data = await response.json();
+        return data;
+    } catch (e) {
+        console.error("Lotto API Error:", e);
+        return null;
+    }
+}
+
+export { getLuckyNumbers, getLatestWinningNumbers };

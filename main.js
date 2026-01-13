@@ -1,4 +1,4 @@
-import { getLuckyNumbers } from './lotto.js';
+import { getLuckyNumbers, getLatestWinningNumbers } from './lotto.js';
 import { initializeI18n, setLanguage, updateTexts } from './i18n.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,6 +26,77 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.getElementById('generator-btn')) {
             document.getElementById('generator-btn').addEventListener('click', generateLottoNumbers);
             generateLottoNumbers();
+        }
+        
+        displayWinningNumbers();
+    }
+
+    // ... (loadUtterances) ...
+
+    async function displayWinningNumbers() {
+        const container = document.getElementById('winning-numbers-display');
+        if (!container) return;
+
+        try {
+            const data = await getLatestWinningNumbers();
+            
+            if (!data || data.returnValue === "fail") {
+                container.innerHTML = '<p style="color:var(--text-color)">Failed to load data.</p>';
+                return;
+            }
+
+            container.innerHTML = ''; // Clear loading
+
+            // Title
+            const title = document.createElement('div');
+            title.style.marginBottom = '0.5rem';
+            title.style.color = 'var(--text-color)';
+            title.innerHTML = `<strong>${data.drwNo}회</strong> (${data.drwNoDate})`;
+            container.appendChild(title);
+
+            // Numbers Row
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.gap = '5px';
+            row.style.flexWrap = 'wrap';
+            row.style.justifyContent = 'center';
+
+            const numbers = [data.drwtNo1, data.drwtNo2, data.drwtNo3, data.drwtNo4, data.drwtNo5, data.drwtNo6];
+            
+            numbers.forEach(num => {
+                const ball = document.createElement('div');
+                ball.className = 'number-ball'; // Reuse existing class
+                ball.style.width = '30px';
+                ball.style.height = '30px';
+                ball.style.fontSize = '14px';
+                ball.style.lineHeight = '30px';
+                ball.textContent = num;
+                ball.style.backgroundColor = getBallColor(num);
+                row.appendChild(ball);
+            });
+
+            // Bonus
+            const plus = document.createElement('span');
+            plus.textContent = '+';
+            plus.style.color = 'var(--text-color)';
+            plus.style.alignSelf = 'center';
+            row.appendChild(plus);
+
+            const bonusBall = document.createElement('div');
+            bonusBall.className = 'number-ball';
+            bonusBall.style.width = '30px';
+            bonusBall.style.height = '30px';
+            bonusBall.style.fontSize = '14px';
+            bonusBall.style.lineHeight = '30px';
+            bonusBall.textContent = data.bnusNo;
+            bonusBall.style.backgroundColor = getBallColor(data.bnusNo);
+            row.appendChild(bonusBall);
+
+            container.appendChild(row);
+
+        } catch (e) {
+            console.error(e);
+            container.innerHTML = '<p style="color:var(--text-color)">Error loading numbers.</p>';
         }
     }
 
