@@ -104,9 +104,6 @@ class AppNav extends HTMLElement {
                 #lang-toggle {
                     font-size: 1rem;
                     font-weight: bold;
-                    border: 1px solid var(--text-color);
-                    width: 32px;
-                    height: 32px;
                 }
 
                 .menu-toggle {
