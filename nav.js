@@ -55,10 +55,18 @@ class AppNav extends HTMLElement {
                     text-decoration: none;
                 }
 
+                .nav-center {
+                    display: flex;
+                    align-items: center;
+                    flex-grow: 1;
+                    justify-content: flex-end;
+                }
+
                 .nav-links {
                     display: flex;
                     align-items: center;
                     gap: 1.5rem;
+                    margin-right: 1.5rem;
                 }
 
                 .nav-links a {
@@ -67,20 +75,38 @@ class AppNav extends HTMLElement {
                     font-size: 1rem;
                 }
 
-                #theme-toggle {
+                .nav-actions {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+
+                #theme-toggle, #lang-toggle {
                     background: none;
                     border: none;
                     font-size: 1.5rem;
                     cursor: pointer;
                     color: var(--text-color);
+                    padding: 0.2rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    transition: background-color 0.2s;
                 }
 
-                #lang-selector {
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    padding: 0.25rem;
+                #theme-toggle:hover, #lang-toggle:hover {
                     background-color: var(--bg-color);
-                    color: var(--text-color);
+                }
+                
+                #lang-toggle {
+                    font-size: 1rem;
+                    font-weight: bold;
+                    border: 1px solid var(--text-color);
+                    width: 32px;
+                    height: 32px;
                 }
 
                 .menu-toggle {
@@ -90,11 +116,16 @@ class AppNav extends HTMLElement {
                     font-size: 1.5rem;
                     cursor: pointer;
                     color: var(--text-color);
+                    margin-left: 0.5rem;
                 }
 
                 @media (max-width: 960px) {
                     .menu-toggle {
                         display: block;
+                    }
+
+                    .nav-center {
+                        flex-grow: 0;
                     }
 
                     .nav-links {
@@ -108,25 +139,41 @@ class AppNav extends HTMLElement {
                         box-shadow: 0 4px 6px var(--shadow-color);
                         padding: 1rem 0;
                         gap: 1rem;
+                        margin-right: 0;
+                        z-index: 999;
                     }
 
                     .nav-links.active {
                         display: flex;
                     }
+                    
+                    /* 모바일 메뉴 내 아이템 중앙 정렬 */
+                    .nav-links a {
+                        width: 100%;
+                        text-align: center;
+                        padding: 0.5rem 0;
+                    }
+                    
+                    .nav-links a:hover {
+                        background-color: var(--bg-color);
+                    }
                 }
             </style>
             <nav class="main-nav">
                 <a href="index.html" class="nav-logo" data-i18n="nav-home">APBP with JoCoding</a>
-                <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
-                <div class="nav-links">
-                    <a href="lotto.html" data-i18n="nav-lotto">Lotto</a>
-                    <a href="food.html" data-i18n="nav-food">Food</a>
-                    <a href="privacy.html" data-i18n="nav-privacy">Privacy</a>
+                
+                <div class="nav-center">
+                    <div class="nav-links">
+                        <a href="lotto.html" data-i18n="nav-lotto">Lotto</a>
+                        <a href="food.html" data-i18n="nav-food">Food</a>
+                        <a href="privacy.html" data-i18n="nav-privacy">Privacy</a>
+                    </div>
+                </div>
+
+                <div class="nav-actions">
                     <button id="theme-toggle">🌙</button>
-                    <select id="lang-selector">
-                        <option value="en">EN</option>
-                        <option value="ko">KO</option>
-                    </select>
+                    <button id="lang-toggle" aria-label="Toggle language">KO</button>
+                    <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
                 </div>
             </nav>
         `;
@@ -134,16 +181,20 @@ class AppNav extends HTMLElement {
 
     setupEventListeners() {
         const themeToggleBtn = this.shadowRoot.querySelector('#theme-toggle');
-        const langSelector = this.shadowRoot.querySelector('#lang-selector');
+        const langToggleBtn = this.shadowRoot.querySelector('#lang-toggle');
         const menuToggle = this.shadowRoot.querySelector('.menu-toggle');
         const navLinks = this.shadowRoot.querySelector('.nav-links');
 
         themeToggleBtn.addEventListener("click", () => this.toggleTheme());
         
-        langSelector.addEventListener('change', (e) => {
-            setLanguage(e.target.value);
+        langToggleBtn.addEventListener('click', () => {
+            const currentLang = localStorage.getItem('language') || 'ko';
+            const newLang = currentLang === 'ko' ? 'en' : 'ko';
+            
+            setLanguage(newLang);
+            this.updateLangButton(newLang);
             initializeI18n(); // Update all texts on the page
-            window.dispatchEvent(new CustomEvent('language-changed', { detail: { language: e.target.value } }));
+            window.dispatchEvent(new CustomEvent('language-changed', { detail: { language: newLang } }));
         });
 
         if (menuToggle) {
@@ -151,9 +202,28 @@ class AppNav extends HTMLElement {
                 navLinks.classList.toggle('active');
             });
         }
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navLinks.classList.contains('active') && 
+                !this.contains(e.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
 
-        // Set initial value for lang selector
-        langSelector.value = localStorage.getItem('language') || 'ko';
+        // Set initial value for lang button
+        const initialLang = localStorage.getItem('language') || 'ko';
+        this.updateLangButton(initialLang);
+    }
+    
+    updateLangButton(lang) {
+        const langToggleBtn = this.shadowRoot.querySelector('#lang-toggle');
+        if (langToggleBtn) {
+            // lang이 ko면 버튼엔 'EN'을 보여줄지(바꿀 대상), 'KO'를 보여줄지(현재 상태) 결정.
+            // 보통 토글 버튼은 현재 상태를 보여주거나 바뀔 상태를 보여줍니다.
+            // 여기서는 현재 상태를 보여주는 것으로 구현합니다 (요청사항: 토글방식 아이콘).
+            langToggleBtn.textContent = lang.toUpperCase();
+        }
     }
 
     initTheme() {
