@@ -45,6 +45,7 @@ class AppNav extends HTMLElement {
                     background-color: var(--card-bg);
                     box-shadow: 0 2px 5px var(--shadow-color);
                     transition: background-color 0.3s ease, color 0.3s ease;
+                    position: relative;
                 }
 
                 .nav-logo {
@@ -81,9 +82,42 @@ class AppNav extends HTMLElement {
                     background-color: var(--bg-color);
                     color: var(--text-color);
                 }
+
+                .menu-toggle {
+                    display: none;
+                    background: none;
+                    border: none;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    color: var(--text-color);
+                }
+
+                @media (max-width: 960px) {
+                    .menu-toggle {
+                        display: block;
+                    }
+
+                    .nav-links {
+                        display: none;
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        width: 100%;
+                        flex-direction: column;
+                        background-color: var(--card-bg);
+                        box-shadow: 0 4px 6px var(--shadow-color);
+                        padding: 1rem 0;
+                        gap: 1rem;
+                    }
+
+                    .nav-links.active {
+                        display: flex;
+                    }
+                }
             </style>
             <nav class="main-nav">
                 <a href="index.html" class="nav-logo" data-i18n="nav-home">APBP with JoCoding</a>
+                <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
                 <div class="nav-links">
                     <a href="lotto.html" data-i18n="nav-lotto">Lotto</a>
                     <a href="food.html" data-i18n="nav-food">Food</a>
@@ -101,6 +135,8 @@ class AppNav extends HTMLElement {
     setupEventListeners() {
         const themeToggleBtn = this.shadowRoot.querySelector('#theme-toggle');
         const langSelector = this.shadowRoot.querySelector('#lang-selector');
+        const menuToggle = this.shadowRoot.querySelector('.menu-toggle');
+        const navLinks = this.shadowRoot.querySelector('.nav-links');
 
         themeToggleBtn.addEventListener("click", () => this.toggleTheme());
         
@@ -109,6 +145,12 @@ class AppNav extends HTMLElement {
             initializeI18n(); // Update all texts on the page
             window.dispatchEvent(new CustomEvent('language-changed', { detail: { language: e.target.value } }));
         });
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
 
         // Set initial value for lang selector
         langSelector.value = localStorage.getItem('language') || 'ko';
