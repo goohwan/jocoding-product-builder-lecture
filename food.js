@@ -20,7 +20,8 @@ const foods = {
         { name: "청국장", en: "Cheonggukjang", descEn: "Boil extra-strong fermented soybean paste with tofu and zucchini.", descKo: "진한 청국장 콩의 구수함과 두부의 부드러움이 어우러진 건강식." },
         { name: "비빔국수", en: "Bibim Guksu", descEn: "Mix wheat noodles with spicy gochujang sauce and vegetables.", descKo: "매콤새콤한 양념장에 소면과 야채를 비벼 입맛 돋우는 국수." },
         { name: "잔치국수", en: "Janchi Guksu", descEn: "Serve wheat noodles in hot anchovy broth with zucchini and egg garnish.", descKo: "따뜻한 멸치 육수에 소면을 말아 호로록 먹는 잔치 음식." },
-        { name: "간장국수", en: "Ganjang Guksu", descEn: "Mix wheat noodles with soy sauce, sesame oil, and sugar.", descKo: "짭조름한 간장과 고소한 참기름으로 맛을 낸 담백한 국수." }
+        { name: "간장국수", en: "Ganjang Guksu", descEn: "Mix wheat noodles with soy sauce, sesame oil, and sugar.", descKo: "짭조름한 간장과 고소한 참기름으로 맛을 낸 담백한 국수." },
+        { name: "추어탕", en: "Chueotang", descEn: "Boil loach with vegetables and perilla powder in a rich, spicy broth.", descKo: "미꾸라지를 갈아 넣고 각종 야채와 들깨가루를 넣어 끓인 보양식." }
     ],
     chinese: [
         { name: "짜장면", en: "Jajangmyeon", descEn: "Stir-fry black bean paste with pork and onions, serve over noodles.", descKo: "춘장에 돼지고기와 야채를 볶아 만든 소스를 면에 비벼 먹는 중식의 대명사." },
@@ -30,7 +31,9 @@ const foods = {
         { name: "양꼬치", en: "Lamb Skewers", descEn: "Skewer lamb cubes, season with cumin, and grill over charcoal.", descKo: "양고기를 꼬치에 꿰어 숯불에 구워 쯔란에 찍어 먹는 별미." },
         { name: "볶음밥", en: "Fried Rice", descEn: "Stir-fry rice with egg, green onions, and vegetables/meat.", descKo: "밥과 계란, 각종 야채를 고슬고슬하게 볶아낸 든든한 한 끼." },
         { name: "유린기", en: "Yuringi", descEn: "Deep-fry chicken and serve with fresh vegetables and soy-vinegar sauce.", descKo: "바삭하게 튀긴 닭고기에 아삭한 야채와 새콤한 간장 소스를 곁들인 요리." },
-        { name: "깐풍기", en: "Kkanpunggi", descEn: "Deep-fry chicken and stir-fry in spicy garlic sauce.", descKo: "튀긴 닭고기를 매콤한 마늘 소스에 빠르게 볶아낸 중화요리." }
+        { name: "깐풍기", en: "Kkanpunggi", descEn: "Deep-fry chicken and stir-fry in spicy garlic sauce.", descKo: "튀긴 닭고기를 매콤한 마늘 소스에 빠르게 볶아낸 중화요리." },
+        { name: "마라탕", en: "Malatang", descEn: "Boil various ingredients in a spicy and numbing Sichuan-style broth.", descKo: "얼큰하고 얼얼한 마라 육수에 원하는 재료를 듬뿍 넣어 끓여 먹는 중식 요리." },
+        { name: "마라샹궈", en: "Mala Xiang Guo", descEn: "Stir-fry meat and vegetables in a spicy and numbing Sichuan sauce.", descKo: "매콤하고 얼얼한 마라 소스에 각종 고기와 야채를 볶아낸 사천식 볶음 요리." }
     ],
     japanese: [
         { name: "초밥", en: "Sushi", descEn: "Place fresh sashimi on seasoned rice balls.", descKo: "새콤달콤하게 간을 한 밥 위에 신선한 생선회를 얹어 먹는 요리." },
