@@ -73,6 +73,7 @@ async function loadCustomFoods() {
             if (!categories.includes('auto')) {
                 categories.push('auto');
             }
+            renderAdminMenuList(); // Update admin list with loaded data
         }
     } catch (e) {
         console.error("Error loading custom foods from Firestore:", e);
@@ -453,6 +454,73 @@ window.addEventListener('language-changed', () => {
 if (recommendBtn) {
     recommendBtn.addEventListener('click', recommend);
 }
+
+// Admin Menu List Logic
+function renderAdminMenuList() {
+    const container = document.getElementById('admin-menu-list-container');
+    if (!container) return;
+
+    container.innerHTML = ''; // Clear
+
+    // Title (Small)
+    const title = document.createElement('div');
+    title.textContent = "Current Menu List (Admin) ▼";
+    title.style.cursor = "pointer";
+    title.style.marginBottom = "0.5rem";
+    title.style.fontWeight = "bold";
+    title.onclick = () => {
+        const listDiv = document.getElementById('admin-menu-items');
+        if(listDiv) {
+            const isHidden = listDiv.style.display === 'none';
+            listDiv.style.display = isHidden ? 'block' : 'none';
+            title.textContent = isHidden ? "Current Menu List (Admin) ▲" : "Current Menu List (Admin) ▼";
+        }
+    };
+    container.appendChild(title);
+
+    const listDiv = document.createElement('div');
+    listDiv.id = 'admin-menu-items';
+    listDiv.style.display = 'none'; // Hidden by default
+    
+    for (const category of categories) {
+        if (!foods[category] || foods[category].length === 0) continue;
+
+        const catDiv = document.createElement('div');
+        catDiv.style.marginBottom = "0.5rem";
+        
+        const catTitle = document.createElement('div');
+        catTitle.textContent = `▶ ${getCategoryName(category)} (${foods[category].length})`;
+        catTitle.style.cursor = "pointer";
+        catTitle.style.marginLeft = "0.5rem";
+        
+        const catList = document.createElement('ul');
+        catList.style.display = "none";
+        catList.style.paddingLeft = "1.5rem";
+        catList.style.marginTop = "0.2rem";
+        catList.style.listStyle = "none";
+        catList.style.margin = "0";
+
+        foods[category].forEach(food => {
+            const item = document.createElement('li');
+            item.textContent = `- ${food.name}`;
+            catList.appendChild(item);
+        });
+
+        catTitle.onclick = () => {
+            const isHidden = catList.style.display === 'none';
+            catList.style.display = isHidden ? 'block' : 'none';
+            catTitle.textContent = isHidden ? `▼ ${getCategoryName(category)} (${foods[category].length})` : `▶ ${getCategoryName(category)} (${foods[category].length})`;
+        };
+
+        catDiv.appendChild(catTitle);
+        catDiv.appendChild(catList);
+        listDiv.appendChild(catDiv);
+    }
+    container.appendChild(listDiv);
+}
+
+// Initial render
+renderAdminMenuList();
 
 // Utterances Comments Logic
 function loadUtterances(theme) {
