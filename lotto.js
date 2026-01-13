@@ -41,35 +41,43 @@ function generateSingleSet() {
     return Array.from(numbers).sort((a, b) => a - b);
 }
 
-// Fetch latest winning numbers from dhlottery API via proxy
+// Fetch latest winning numbers from dhlottery API (Main Info)
 async function getLatestWinningNumbers() {
-    const startDate = new Date('2002-12-07T20:40:00'); // 1st draw date
-    const now = new Date();
-    const diffTime = Math.abs(now - startDate);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-    let drawNo = Math.floor(diffDays / 7) + 1;
-
-    let data = await fetchLottoData(drawNo);
-    
-    // If future draw or not yet updated, try previous one
-    if (!data || data.returnValue === "fail") {
-        data = await fetchLottoData(drawNo - 1);
-    }
-    
-    return data;
-}
-
-async function fetchLottoData(drwNo) {
     const proxyUrl = "https://corsproxy.io/?";
-    const targetUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drwNo}`;
+    const targetUrl = "https://www.dhlottery.co.kr/selectMainInfo.do";
     
     try {
         const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
-        const data = await response.json();
-        return data;
+        const json = await response.json();
+        
+        // Extract Lotto 6/45 data
+        // API response structure: data.result.pstLtEpstInfo.lt645 (Array)
+        const lt645List = json.data?.result?.pstLtEpstInfo?.lt645;
+        
+        if (!lt645List || lt645List.length === 0) {
+            throw new Error("No Lotto data found in API response");
+        }
+
+        // Sort by episode descending to get the latest
+        lt645List.sort((a, b) => b.ltEpsd - a.ltEpsd);
+        
+        const latest = lt645List[0];
+        
+        return {
+            drwNo: latest.ltEpsd,
+            drwNoDate: latest.ltRflYmd.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), // YYYYMMDD -> YYYY-MM-DD
+            drwtNo1: latest.tm1WnNo,
+            drwtNo2: latest.tm2WnNo,
+            drwtNo3: latest.tm3WnNo,
+            drwtNo4: latest.tm4WnNo,
+            drwtNo5: latest.tm5WnNo,
+            drwtNo6: latest.tm6WnNo,
+            bnusNo: latest.bnsWnNo,
+            returnValue: "success"
+        };
     } catch (e) {
         console.error("Lotto API Error:", e);
-        return null;
+        return { returnValue: "fail" };
     }
 }
 
