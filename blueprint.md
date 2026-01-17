@@ -78,3 +78,8 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
 *   **[Done]** **Migration Tool**: Created `migrate.html` to allow one-click synchronization of local `recipes.json` data to the cloud database.
 *   **[Done]** **Bilingual Support**: Ensured Firestore data retrieval works seamlessly with the existing i18n system for descriptions and titles.
 *   **[Planned]** **Initial Data Upload**: Execute migration to populate the Firestore database with initial 40+ recipes.
+
+### Phase 8: GEO Optimization (Current)
+*   **[In Progress]** **Structured Data (JSON-LD)**: Add Schema.org structured data to `index.html`, `lotto.html`, `food.html`, and `privacy.html` to enhance search engine understanding (GEO).
+*   **[In Progress]** **Content Enhancement**: Add FAQ sections to service pages (`lotto.html`, `food.html`) to answer common user questions and improve relevance for AI search engines.
+*   **[In Progress]** **Meta Tags**: Ensure all pages have optimized `description`, `keywords`, and Open Graph tags.

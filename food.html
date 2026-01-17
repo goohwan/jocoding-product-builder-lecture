@@ -42,6 +42,49 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3474389046240414"
      crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "What to Eat Today?",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "A random food menu recommender that helps you decide what to eat for lunch or dinner."
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "How does the food recommendation work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It randomly selects a menu from various categories including Korean, Chinese, Japanese, and Western food."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Do you provide recipes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, for many recommended menus, we provide a basic recipe guide including ingredients and instructions."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Is it free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, the service is completely free."
+        }
+      }]
+    }
+    </script>
 </head>
 <body>
     <app-nav></app-nav>
@@ -141,6 +184,23 @@
 
             <!-- Comments Section (as a board) -->
             <div class="comments-section info-box" style="width: 100%; max-width: 600px; margin: 0 auto;"></div>
+            
+            <!-- SEO Content: FAQ Section -->
+            <section class="seo-content" style="max-width: 800px; margin: 2rem auto; padding: 1rem; color: var(--text-color);">
+                <h2 style="text-align: center; margin-bottom: 1.5rem;" data-i18n="faq-title">Frequently Asked Questions</h2>
+                <div class="faq-item" style="margin-bottom: 1rem;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;" data-i18n="faq-q1">Q: How does the recommendation work?</h3>
+                    <p data-i18n="faq-a1">A: We use a random algorithm to select a delicious menu from our extensive database of Korean, Western, Chinese, and Japanese cuisines.</p>
+                </div>
+                <div class="faq-item" style="margin-bottom: 1rem;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;" data-i18n="faq-q2">Q: Are recipes provided?</h3>
+                    <p data-i18n="faq-a2">A: Yes! When a menu is recommended, we fetch and display the recipe details including ingredients and cooking steps if available.</p>
+                </div>
+                <div class="faq-item" style="margin-bottom: 1rem;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;" data-i18n="faq-q3">Q: Can I search for a specific recipe?</h3>
+                    <p data-i18n="faq-a3">A: Yes, use the search bar in the side panel to find recipes for any dish you are interested in.</p>
+                </div>
+            </section>
         </div>
     </main>
     <script type="module" src="nav.js"></script>
