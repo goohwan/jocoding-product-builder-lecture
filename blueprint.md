@@ -10,6 +10,7 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
     *   **`index.html`**: The main landing page (Service Hub).
     *   **`lotto.html`**: The Lotto Number Generator service.
     *   **`food.html`**: The "What to eat today?" service.
+    *   **`faq.html`**: The Frequently Asked Questions page.
     *   **`privacy.html`**: The Privacy Policy page.
 
 ### 2. **Core Components**
@@ -80,8 +81,8 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
 *   **[Planned]** **Initial Data Upload**: Execute migration to populate the Firestore database with initial 40+ recipes.
 
 ### Phase 8: GEO Optimization (Current)
-*   **[In Progress]** **Structured Data (JSON-LD)**: Add Schema.org structured data to `index.html`, `lotto.html`, `food.html`, and `privacy.html` to enhance search engine understanding (GEO).
-*   **[In Progress]** **Content Enhancement**: Add FAQ sections to service pages (`lotto.html`, `food.html`) to answer common user questions and improve relevance for AI search engines.
+*   **[Done]** **Structured Data (JSON-LD)**: Add Schema.org structured data to `index.html`, `lotto.html`, `food.html`, and `privacy.html` to enhance search engine understanding (GEO).
+*   **[Done]** **Centralized FAQ**: Created `faq.html` to consolidate FAQs from service pages (`lotto.html`, `food.html`) into a single, SEO-optimized page with structured data.
 *   **[In Progress]** **Meta Tags**: Ensure all pages have optimized `description`, `keywords`, and Open Graph tags.
 
 ### Phase 9: Social Sharing (Current)

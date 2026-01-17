@@ -164,6 +164,7 @@ class AppNav extends HTMLElement {
                         <a href="lotto.html" data-i18n="nav-lotto">Lotto</a>
                         <a href="food.html" data-i18n="nav-food">Food</a>
                         <a href="privacy.html" data-i18n="nav-privacy">Privacy</a>
+                        <a href="faq.html" data-i18n="nav-faq">FAQ</a>
                     </div>
                 </div>
 
