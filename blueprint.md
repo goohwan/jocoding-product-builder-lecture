@@ -14,12 +14,16 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
     *   **`privacy.html`**: The Privacy Policy page.
 
 ### 2. **Core Components**
-    *   **Navigation (`<app-nav>`)**: A reusable custom web component for site-wide navigation.
-        *   Links to all main pages.
-        *   Theme toggle switch (dark/light mode).
-        *   Language selector (English/Korean).
-        *   **Sticky Position**: Fixed at the top for better UX.
-    *   **Internationalization (i18n)**: A module to handle language switching across the site using `data-i18n` attributes.
+    *   **Core Components**
+        *   **Navigation (`<app-nav>`)**: A reusable custom web component for site-wide navigation.
+            *   Links to all main pages.
+            *   Theme toggle switch (dark/light mode).
+            *   Language selector (English/Korean).
+            *   **Sticky Position**: Fixed at the top for better UX.
+        *   **Footer (`<app-footer>`)**: A reusable custom web component for the site footer.
+            *   Links to "Privacy Policy" and "FAQ".
+            *   Copyright notice: "copyright all rights reserved ⓒgoohwan.net".
+        *   **Internationalization (i18n)**: A module to handle language switching across the site using `data-i18n` attributes.
     *   **Styling**: A central `style.css` for consistent look and feel, using modern CSS features like variables for theming.
     *   **Assets**: SVG icons for services located in `assets/`.
 
@@ -89,4 +93,10 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
 *   **[Done]** **AddToAny Integration**: Add social sharing buttons (Facebook, Kakao, Line, X, etc.) to all pages (`index.html`, `lotto.html`, `food.html`, `privacy.html`) to encourage user engagement and viral growth.
 
 ### Phase 10: Feedback System (Current)
-*   **[In Progress]** **Userback Integration**: Add Userback feedback widget to all pages to collect user feedback and bug reports directly.
+*   **[Done]** **Userback Integration**: Add Userback feedback widget to all pages to collect user feedback and bug reports directly.
+
+### Phase 11: Footer Implementation (Current)
+*   **[Done]** **Footer Component**: Created `<app-footer>` custom element (`footer.js`) to modularize the footer section.
+*   **[Done]** **Link Relocation**: Moved "Privacy Policy" and "FAQ" links from the main navigation to the new footer.
+*   **[Done]** **Copyright**: Added copyright notice "copyright all rights reserved ⓒgoohwan.net" to the footer.
+*   **[Done]** **Sticky Footer**: Updated `style.css` to ensure the footer always stays at the bottom of the viewport.
