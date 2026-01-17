@@ -45,7 +45,23 @@ const translations = {
         "food-btn-thinking": "Thinking... Please wait a moment",
         "recipe-search-title": "Search Recipe",
         "recipe-search-placeholder": "Enter menu name",
-        "category-auto": "Auto Added"
+        "category-auto": "Auto Added",
+        "nav-faq": "FAQ",
+        "faq-title": "Frequently Asked Questions (FAQ)",
+        "faq-lotto-title": "Lotto Number Generator",
+        "faq-lotto-q1": "Q: Is this Lotto Number Generator free?",
+        "faq-lotto-a1": "A: Yes, APBP's Lotto Number Generator is completely free to use for everyone.",
+        "faq-lotto-q2": "Q: How does it generate numbers?",
+        "faq-lotto-a2": "A: It uses a secure random number generation algorithm to ensure fair and unpredictable results, similar to drawing balls from a real machine.",
+        "faq-lotto-q3": "Q: Can I save the generated numbers?",
+        "faq-lotto-a3": "A: Currently, you can copy the numbers to your clipboard by clicking on the number row. We plan to add a save feature in the future.",
+        "faq-food-title": "What to Eat Today?",
+        "faq-food-q1": "Q: How does the recommendation work?",
+        "faq-food-a1": "A: We use a random algorithm to select a delicious menu from our extensive database of Korean, Western, Chinese, and Japanese cuisines.",
+        "faq-food-q2": "Q: Are recipes provided?",
+        "faq-food-a2": "A: Yes! When a menu is recommended, we fetch and display the recipe details including ingredients and cooking steps if available.",
+        "faq-food-q3": "Q: Can I search for a specific recipe?",
+        "faq-food-a3": "A: Yes, use the search bar in the side panel to find recipes for any dish you are interested in."
     },
     ko: {
         "nav-home": "APBP with JoCoding",
@@ -93,7 +109,23 @@ const translations = {
         "food-btn-thinking": "고민중... 잠깐만 기다려줘",
         "recipe-search-title": "레시피 검색",
         "recipe-search-placeholder": "메뉴명 입력",
-        "category-auto": "자동추가"
+        "category-auto": "자동추가",
+        "nav-faq": "자주 묻는 질문(FAQ)",
+        "faq-title": "자주 묻는 질문 (FAQ)",
+        "faq-lotto-title": "로또 번호 생성기",
+        "faq-lotto-q1": "Q: 이 로또 번호 생성기는 무료인가요?",
+        "faq-lotto-a1": "A: 네, APBP의 로또 번호 생성기는 누구나 무료로 사용할 수 있습니다.",
+        "faq-lotto-q2": "Q: 번호는 어떻게 생성되나요?",
+        "faq-lotto-a2": "A: 안전한 난수 생성 알고리즘을 사용하여 실제 추첨기와 유사하게 공정하고 예측 불가능한 결과를 보장합니다.",
+        "faq-lotto-q3": "Q: 생성된 번호를 저장할 수 있나요?",
+        "faq-lotto-a3": "A: 현재는 번호 줄을 클릭하여 클립보드에 복사할 수 있습니다. 추후 저장 기능을 추가할 계획입니다.",
+        "faq-food-title": "오늘 뭐 먹지?",
+        "faq-food-q1": "Q: 메뉴 추천은 어떻게 작동하나요?",
+        "faq-food-a1": "A: 한식, 양식, 중식, 일식 등 방대한 데이터베이스에서 무작위 알고리즘을 사용하여 맛있는 메뉴를 선정합니다.",
+        "faq-food-q2": "Q: 레시피도 제공되나요?",
+        "faq-food-a2": "A: 네! 메뉴가 추천되면 가능한 경우 재료와 조리 단계를 포함한 레시피 정보를 함께 보여드립니다.",
+        "faq-food-q3": "Q: 특정 레시피를 검색할 수 있나요?",
+        "faq-food-a3": "A: 네, 음식 페이지의 사이드 패널에 있는 검색창을 통해 원하는 요리의 레시피를 찾을 수 있습니다."
     }
 };
 

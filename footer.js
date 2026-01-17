@@ -67,7 +67,7 @@ class AppFooter extends HTMLElement {
                         <a href="faq.html" data-i18n="nav-faq">FAQ</a>
                     </div>
                     <div class="copyright">
-                        copyright all rights reserved ⓒgoohwan.net
+                        copyright all rights reserved by goohwan.net
                     </div>
                 </div>
             </footer>
