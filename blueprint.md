@@ -83,3 +83,6 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
 *   **[In Progress]** **Structured Data (JSON-LD)**: Add Schema.org structured data to `index.html`, `lotto.html`, `food.html`, and `privacy.html` to enhance search engine understanding (GEO).
 *   **[In Progress]** **Content Enhancement**: Add FAQ sections to service pages (`lotto.html`, `food.html`) to answer common user questions and improve relevance for AI search engines.
 *   **[In Progress]** **Meta Tags**: Ensure all pages have optimized `description`, `keywords`, and Open Graph tags.
+
+### Phase 9: Social Sharing (Current)
+*   **[In Progress]** **AddToAny Integration**: Add social sharing buttons (Facebook, Kakao, Line, X, etc.) to all pages (`index.html`, `lotto.html`, `food.html`, `privacy.html`) to encourage user engagement and viral growth.
