@@ -100,3 +100,9 @@ This project is a multi-service web application rebranded as **APBP (AI Product 
 *   **[Done]** **Link Relocation**: Moved "Privacy Policy" and "FAQ" links from the main navigation to the new footer.
 *   **[Done]** **Copyright**: Added copyright notice "copyright all rights reserved ⓒgoohwan.net" to the footer.
 *   **[Done]** **Sticky Footer**: Updated `style.css` to ensure the footer always stays at the bottom of the viewport.
+
+### Phase 12: Layout Refinement (Current)
+*   **[Done]** **Dynamic Service Grid**: Refactored `index.html` and `main.js` to dynamically generate service cards.
+*   **[Done]** **Fill Rows with Ads**: Implemented logic to ensure the grid always has full rows (multiples of 3) by automatically filling empty slots with AdSense units (minimum 1 ad).
+*   **[Done]** **Random Shuffle**: Added functionality to randomly shuffle service and ad cards for varied presentation.
+*   **[Done]** **Horizontal Coming Soon**: Updated the "Coming Soon" card to be a full-width, half-height horizontal card positioned at the bottom of the grid, distinct from the main service flow.

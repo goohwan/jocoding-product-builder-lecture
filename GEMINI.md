@@ -166,3 +166,7 @@ When requested for Firebase add the following the server configurations to .idx/
         }
     }
 }
+
+# User Rules
+- 기본 대화는 한국어로 진행한다.
+- 코드 수정 후에는 반드시 commit 및 push를 진행한다.

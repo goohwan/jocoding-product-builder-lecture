@@ -12,7 +12,117 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const body = document.body;
 
+    function setupServiceGrid() {
+        const grid = document.getElementById('service-grid');
+        if (!grid) return;
+
+        // Data Models
+        const services = [
+            {
+                type: 'service',
+                href: 'lotto.html',
+                img: 'assets/gen-lotto-wide.svg',
+                titleKey: 'lotto-service-name',
+                titleDefault: 'Lotto Generator',
+                descKey: 'lotto-service-desc',
+                descDefault: 'Get your lucky numbers for the week.'
+            },
+            {
+                type: 'service',
+                href: 'food.html',
+                img: 'assets/gen-food-wide.svg',
+                titleKey: 'food-service-name',
+                titleDefault: 'What to Eat?',
+                descKey: 'food-service-desc',
+                descDefault: 'Random meal recommendation.'
+            }
+        ];
+
+        // Logic to fill rows of 3 with at least 1 ad
+        // Total items (services + ads) must be a multiple of 3
+        const totalServices = services.length;
+        const minCards = totalServices + 1; // At least one ad
+        let totalCards = minCards;
+        while (totalCards % 3 !== 0) {
+            totalCards++;
+        }
+        
+        const adCount = totalCards - totalServices;
+
+        const cards = [...services];
+        for (let i = 0; i < adCount; i++) {
+            cards.push({ type: 'ad' });
+        }
+
+        // Shuffle cards
+        for (let i = cards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cards[i], cards[j]] = [cards[j], cards[i]];
+        }
+
+        // Render Cards
+        grid.innerHTML = '';
+        cards.forEach(card => {
+            if (card.type === 'service') {
+                const el = document.createElement('a');
+                el.href = card.href;
+                el.className = 'service-card';
+                el.innerHTML = `
+                    <img src="${card.img}" alt="${card.titleDefault} Banner" class="service-banner">
+                    <div class="service-info">
+                        <h2 data-i18n="${card.titleKey}">${card.titleDefault}</h2>
+                        <p data-i18n="${card.descKey}">${card.descDefault}</p>
+                    </div>
+                `;
+                grid.appendChild(el);
+            } else {
+                const el = document.createElement('div');
+                el.className = 'service-card ad-card';
+                // AdSense specific clean container styles
+                el.style.display = 'flex';
+                el.style.alignItems = 'center';
+                el.style.justifyContent = 'center';
+                el.style.minHeight = '300px'; 
+                el.style.height = 'auto';
+                
+                el.innerHTML = `
+                <ins class="adsbygoogle"
+                     style="display:block; width: 100%; height: 100%;"
+                     data-ad-client="ca-pub-3474389046240414"
+                     data-ad-slot="4185875094"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                `;
+                grid.appendChild(el);
+                
+                // Trigger AdSense
+                try {
+                    (window.adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (e) {
+                    console.error('AdSense error:', e);
+                }
+            }
+        });
+
+        // Add "Coming Soon" card at the bottom (full width)
+        const comingSoon = document.createElement('a');
+        comingSoon.href = '#';
+        comingSoon.className = 'service-card coming-soon horizontal-card';
+        comingSoon.innerHTML = `
+            <img src="assets/gen-soon-wide.svg" alt="Coming Soon Banner" class="service-banner">
+            <div class="service-info">
+                <h2 data-i18n="future-service-name">Coming Soon</h2>
+                <p data-i18n="future-service-desc">More services are on the way.</p>
+            </div>
+        `;
+        grid.appendChild(comingSoon);
+        
+        // Update translations for newly created elements
+        updateTexts();
+    }
+
     function setupEventListeners() {
+        setupServiceGrid();
         // Listen for theme changes from the nav component
         window.addEventListener('theme-changed', (e) => {
             const theme = e.detail.theme;
