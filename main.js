@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         while (totalCards % 3 !== 0) {
             totalCards++;
         }
-        
+
         const adCount = totalCards - totalServices;
 
         const cards = [...services];
@@ -82,9 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.style.display = 'flex';
                 el.style.alignItems = 'center';
                 el.style.justifyContent = 'center';
-                el.style.minHeight = '300px'; 
+                el.style.minHeight = '300px';
                 el.style.height = 'auto';
-                
+
                 el.innerHTML = `
                 <ins class="adsbygoogle"
                      style="display:block; width: 100%; height: 100%;"
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                      data-full-width-responsive="true"></ins>
                 `;
                 grid.appendChild(el);
-                
+
                 // Trigger AdSense
                 try {
                     (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -109,14 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
         comingSoon.href = '#';
         comingSoon.className = 'service-card coming-soon horizontal-card';
         comingSoon.innerHTML = `
-            <img src="assets/gen-soon-wide.svg" alt="Coming Soon Banner" class="service-banner">
+            <img src="assets/gen-soon-wide.png" alt="Coming Soon Banner" class="service-banner">
             <div class="service-info">
                 <h2 data-i18n="future-service-name">Coming Soon</h2>
                 <p data-i18n="future-service-desc">More services are on the way.</p>
             </div>
         `;
         grid.appendChild(comingSoon);
-        
+
         // Update translations for newly created elements
         updateTexts();
     }
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('generator-btn').addEventListener('click', generateLottoNumbers);
             generateLottoNumbers();
         }
-        
+
         displayWinningNumbers();
     }
 
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const data = await getLatestWinningNumbers();
-            
+
             if (!data || data.returnValue === "fail") {
                 container.innerHTML = '<p style="color:var(--text-color)">Failed to load data.</p>';
                 return;
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
             row.style.justifyContent = 'center';
 
             const numbers = [data.drwtNo1, data.drwtNo2, data.drwtNo3, data.drwtNo4, data.drwtNo5, data.drwtNo6];
-            
+
             numbers.forEach(num => {
                 const ball = document.createElement('div');
                 ball.className = 'number-ball'; // Reuse existing class
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadUtterances(theme) {
         const commentsSection = document.querySelector('.comments-section');
         if (!commentsSection) return;
-        commentsSection.innerHTML = ''; 
+        commentsSection.innerHTML = '';
 
         const script = document.createElement('script');
         script.src = 'https://utteranc.es/client.js';
@@ -231,11 +231,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const numberDisplay = document.querySelector(".number-display");
         if (!numberDisplay) return;
         numberDisplay.innerHTML = "<div class='loading'></div>";
-        
+
         const sets = await getLuckyNumbers();
 
         numberDisplay.innerHTML = "";
-        
+
         sets.forEach((numbers, i) => {
             if (!Array.isArray(numbers)) return;
             const row = document.createElement("div");
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const originalBg = row.style.backgroundColor;
                     row.style.transition = 'background-color 0.3s';
                     row.style.backgroundColor = 'var(--btn-bg)';
-                    
+
                     // Create and append a temporary "Copied!" message if not already present
                     let msg = row.querySelector('.copy-msg');
                     if (!msg) {
